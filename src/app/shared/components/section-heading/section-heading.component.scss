@@ -1,0 +1,32 @@
+.heading-block {
+  margin-bottom: var(--space-12);
+  max-width: 820px;
+
+  &--centered {
+    margin-inline: auto;
+    text-align: center;
+
+    .section-eyebrow {
+      justify-content: center;
+    }
+  }
+
+  &__title {
+    font-size: var(--heading-md);
+    color: var(--color-primary);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    margin-bottom: var(--space-4);
+  }
+
+  &__subtitle {
+    font-size: var(--font-lg);
+    line-height: 1.6;
+    color: var(--color-muted);
+    font-weight: 400;
+
+    @media (max-width: 640px) {
+      font-size: var(--font-base);
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<section id="approach" class="section approach" aria-labelledby="approach-title">
+  <div class="container">
+    <div class="approach__header">
+      <span class="section-eyebrow">03 / Methodology</span>
+      <h2 id="approach-title" class="approach__title">Where Strategy Meets Creativity.</h2>
+      <p class="approach__subtitle">
+        Conceptual engagement approach designed to bridge complex institutional mandates with exceptional creative delivery.
+      </p>
+    </div>
+
+    <div class="approach__grid">
+      @for (step of steps; track step.stepNumber) {
+        <article class="approach__card">
+          <div class="approach__card-top">
+            <span class="approach__card-number">{{ step.stepNumber }}</span>
+            <span class="approach__card-phase">{{ step.phaseName }}</span>
+          </div>
+
+          <h3 class="approach__card-title">{{ step.title }}</h3>
+          <p class="approach__card-desc">{{ step.description }}</p>
+
+          <div class="approach__card-indicator" aria-hidden="true"></div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

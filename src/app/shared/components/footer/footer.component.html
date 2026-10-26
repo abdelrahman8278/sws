@@ -1,0 +1,55 @@
+<footer class="footer" role="contentinfo">
+  <div class="container footer__container">
+    <div class="footer__grid">
+      <!-- Brand & Mission Column -->
+      <div class="footer__col footer__col--brand">
+        <a href="#hero" class="footer__brand" aria-label="Stellar Media Homepage">
+          STELLAR MEDIA<span class="footer__brand-accent">✦</span>
+        </a>
+        <p class="footer__description">
+          Working with government entities and major brands across the United Arab Emirates.
+        </p>
+        <div class="footer__location-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span>Abu Dhabi, UAE</span>
+        </div>
+      </div>
+
+      <!-- Navigation Column -->
+      <div class="footer__col footer__col--nav">
+        <h2 class="footer__heading">INSTITUTIONAL NAVIGATION</h2>
+        <ul class="footer__list">
+          @for (item of navLinks; track item.href) {
+            <li class="footer__item">
+              <a [href]="item.href" class="footer__link">{{ item.label }}</a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Sovereign Focus Column -->
+      <div class="footer__col footer__col--focus">
+        <h2 class="footer__heading">SOVEREIGN FOCUS</h2>
+        <p class="footer__focus-text">
+          Delivering dignified strategic governance, institutional prominence, and modern narrative across the Abu Dhabi creative ecosystem.
+        </p>
+        <div class="footer__mandate-tag">
+          <span>Institutional Alignment: Abu Dhabi Mandates</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer__bottom">
+      <p class="footer__copyright">
+        &copy; {{ currentYear }} Stellar Media. All rights reserved.
+      </p>
+      <p class="footer__jurisdiction">
+        Abu Dhabi, United Arab Emirates
+      </p>
+    </div>
+  </div>
+</footer>

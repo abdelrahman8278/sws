@@ -1,0 +1,239 @@
+<section id="contact" class="section contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="contact__header">
+      <span class="section-eyebrow">04 / Engagement</span>
+      <h2 id="contact-title" class="contact__title">Let's Create Something Meaningful.</h2>
+      <p class="contact__subtitle">
+        Have a project in mind? We'd love to start a conversation.
+      </p>
+    </div>
+
+    <!-- Official Advisory Protocol Container -->
+    <div class="contact__card">
+      <div class="contact__card-body">
+        <div class="contact__protocol">
+          <div class="contact__protocol-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <polyline points="9 12 11 14 15 10"></polyline>
+            </svg>
+          </div>
+          <div class="contact__protocol-text">
+            <span class="contact__protocol-label">OFFICIAL ADVISORY PROTOCOL</span>
+            <p class="contact__protocol-desc">
+              Official verified channels: direct executive briefing request and portal write-in channels pending launch approval.
+            </p>
+          </div>
+        </div>
+
+        <div class="contact__meta">
+          <div class="contact__location">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <div>
+              <span class="contact__location-title">Office Location</span>
+              <p class="contact__location-val">Abu Dhabi Global Market / Cultural District, Abu Dhabi, UAE</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact__card-action">
+        <button
+          type="button"
+          class="btn btn--primary btn--lg contact__cta-btn"
+          (click)="openBriefingModal()"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Schedule Institutional Briefing</span>
+          <span class="contact__cta-arrow" aria-hidden="true">↗</span>
+        </button>
+        <span class="contact__card-note">Available for entity mandates · Direct confidentiality assured</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessible Briefing Modal Dialog -->
+  @if (isBriefingModalOpen()) {
+    <div
+      class="contact__modal-backdrop"
+      (click)="closeBriefingModal()"
+      role="presentation"
+    ></div>
+    <div
+      class="contact__modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="contact__modal-header">
+        <div>
+          <span class="section-eyebrow">Institutional Engagement</span>
+          <h3 id="modal-title" class="contact__modal-title">Schedule Institutional Briefing</h3>
+        </div>
+        <button
+          type="button"
+          class="contact__modal-close"
+          aria-label="Close dialog"
+          (click)="closeBriefingModal()"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      @if (!isSubmitted()) {
+        <form
+          [formGroup]="briefingForm"
+          (ngSubmit)="submitBriefing()"
+          class="contact__form"
+          novalidate
+        >
+          <div class="contact__form-row">
+            <div class="contact__form-group">
+              <label for="entityName" class="contact__label">
+                Entity / Organization Name <span class="contact__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="entityName"
+                type="text"
+                formControlName="entityName"
+                class="contact__input"
+                [class.contact__input--error]="briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched"
+                placeholder="e.g. Department of Culture & Tourism"
+                autocomplete="organization"
+              />
+              @if (briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched) {
+                <span class="contact__error-msg">Organization or entity name is required.</span>
+              }
+            </div>
+
+            <div class="contact__form-group">
+              <label for="representativeName" class="contact__label">
+                Representative Name <span class="contact__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="representativeName"
+                type="text"
+                formControlName="representativeName"
+                class="contact__input"
+                [class.contact__input--error]="briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched"
+                placeholder="Your full name"
+                autocomplete="name"
+              />
+              @if (briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched) {
+                <span class="contact__error-msg">Representative name is required.</span>
+              }
+            </div>
+          </div>
+
+          <div class="contact__form-row">
+            <div class="contact__form-group">
+              <label for="officialEmail" class="contact__label">
+                Official Institutional Email <span class="contact__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="officialEmail"
+                type="email"
+                formControlName="officialEmail"
+                class="contact__input"
+                [class.contact__input--error]="briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched"
+                placeholder="name@entity.gov.ae or enterprise.ae"
+                autocomplete="email"
+              />
+              @if (briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched) {
+                <span class="contact__error-msg">Please provide a valid official email address.</span>
+              }
+            </div>
+
+            <div class="contact__form-group">
+              <label for="mandateScope" class="contact__label">
+                Mandate Focus <span class="contact__required" aria-hidden="true">*</span>
+              </label>
+              <select
+                id="mandateScope"
+                formControlName="mandateScope"
+                class="contact__select"
+              >
+                <option value="Brand Strategy">Brand Strategy & Governance</option>
+                <option value="Digital Marketing">Digital Marketing & Architecture</option>
+                <option value="Creative Campaigns">Creative Campaigns & Resonance</option>
+                <option value="Social Media">Executive Dialogue & Social Media</option>
+                <option value="Content Production">Cinema-grade Content & Archives</option>
+                <option value="Event Marketing">State-level Event & Ceremonial</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="contact__form-group">
+            <label for="message" class="contact__label">
+              Briefing Objectives &amp; Scope <span class="contact__required" aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id="message"
+              formControlName="message"
+              rows="4"
+              class="contact__textarea"
+              [class.contact__input--error]="briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched"
+              placeholder="Outline project scope, timeline expectations, and strategic objectives..."
+            ></textarea>
+            @if (briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched) {
+              <span class="contact__error-msg">Briefing objectives must be at least 10 characters.</span>
+            }
+          </div>
+
+          <div class="contact__form-actions">
+            <button
+              type="button"
+              class="btn btn--secondary"
+              (click)="closeBriefingModal()"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn btn--primary"
+            >
+              <span>Submit Briefing Request</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      } @else {
+        <div class="contact__success">
+          <div class="contact__success-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h4 class="contact__success-title">Briefing Request Received</h4>
+          <p class="contact__success-desc">
+            Thank you for reaching out. Your institutional briefing inquiry for
+            <strong>{{ briefingForm.get('entityName')?.value }}</strong>
+            has been registered in accordance with our advisory protocol.
+            Our leadership team will review the mandate requirements and follow up via
+            <strong>{{ briefingForm.get('officialEmail')?.value }}</strong>.
+          </p>
+          <button
+            type="button"
+            class="btn btn--primary"
+            (click)="resetForm()"
+          >
+            Close Confirmation
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

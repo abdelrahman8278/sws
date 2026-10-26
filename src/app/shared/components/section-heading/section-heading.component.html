@@ -1,0 +1,21 @@
+<div class="heading-block" [class.heading-block--centered]="centered">
+  @if (eyebrow) {
+    <span class="section-eyebrow">{{ eyebrow }}</span>
+  }
+
+  @switch (titleLevel) {
+    @case ('h1') {
+      <h1 class="heading-block__title">{{ title }}</h1>
+    }
+    @case ('h3') {
+      <h3 class="heading-block__title">{{ title }}</h3>
+    }
+    @default {
+      <h2 class="heading-block__title">{{ title }}</h2>
+    }
+  }
+
+  @if (subtitle) {
+    <p class="heading-block__subtitle">{{ subtitle }}</p>
+  }
+</div>

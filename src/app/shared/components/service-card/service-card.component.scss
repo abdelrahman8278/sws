@@ -1,0 +1,93 @@
+.service-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-normal);
+  position: relative;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: #cbd5e1;
+    box-shadow: var(--shadow-card-hover);
+
+    .service-card__icon-box {
+      background-color: var(--color-primary);
+      color: #ffffff;
+      border-color: var(--color-primary);
+    }
+
+    .service-card__arrow {
+      transform: translateX(4px);
+      color: var(--color-accent);
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+  }
+
+  &__icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-subtle);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    transition: all var(--transition-fast);
+  }
+
+  &__discipline {
+    font-family: var(--font-body);
+    font-size: var(--font-xs);
+    font-weight: 700;
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    font-size: 1.35rem;
+    color: var(--color-primary);
+    margin-bottom: var(--space-3);
+    font-weight: 700;
+  }
+
+  &__description {
+    font-size: var(--font-sm);
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+    flex-grow: 1;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  &__tag {
+    font-size: var(--font-xs);
+    font-weight: 600;
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+  }
+
+  &__arrow {
+    font-size: 1.1rem;
+    color: var(--color-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+}
