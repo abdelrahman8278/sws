@@ -48,6 +48,18 @@
       font-size: 0.9em;
       transform: translateY(-1px);
     }
+
+    &-logo {
+      height: 38px;
+      width: auto;
+      max-width: 150px;
+      object-fit: contain;
+      display: block;
+
+      &--mobile {
+        height: 32px;
+      }
+    }
   }
 
   &__nav {

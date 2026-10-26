@@ -1,7 +1,13 @@
 <header class="header" [class.header--scrolled]="isScrolled()" role="banner">
   <div class="container header__container">
     <a href="#hero" class="header__brand" (click)="closeMenu()" aria-label="Stellar Media Homepage">
-      STELLAR MEDIA<span class="header__brand-accent">✦</span>
+      <img
+        src="assets/images/Stellar-Media-Logo-light.png"
+        alt="Stellar Media"
+        class="header__brand-logo"
+        width="160"
+        height="44"
+      />
     </a>
 
     <nav class="header__nav" aria-label="Main navigation">
@@ -54,8 +60,14 @@
     <div class="header__mobile-backdrop" (click)="closeMenu()" tabindex="-1"></div>
     <div class="header__mobile-panel">
       <div class="header__mobile-top">
-        <a href="#hero" class="header__brand" (click)="closeMenu()">
-          STELLAR MEDIA<span class="header__brand-accent">✦</span>
+        <a href="#hero" class="header__brand" (click)="closeMenu()" aria-label="Stellar Media Homepage">
+          <img
+            src="assets/images/Stellar-Media-Logo-light.png"
+            alt="Stellar Media"
+            class="header__brand-logo header__brand-logo--mobile"
+            width="150"
+            height="40"
+          />
         </a>
         <button
           type="button"
