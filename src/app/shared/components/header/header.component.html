@@ -1,6 +1,6 @@
 <header class="header" [class.header--scrolled]="isScrolled()" role="banner">
   <div class="container header__container">
-    <a href="#hero" class="header__brand" (click)="closeMenu()" aria-label="Stellar Media Homepage">
+    <a href="#hero" class="header__brand" aria-label="Stellar Media Homepage">
       <img
         src="assets/images/Stellar-Media-Logo-light.png"
         alt="Stellar Media"
@@ -14,26 +14,52 @@
       <ul class="header__nav-list">
         @for (item of navItems; track item.href) {
           <li class="header__nav-item">
-            <a [href]="item.href" class="header__nav-link">{{ item.label }}</a>
+            <a [href]="item.href" class="header__nav-link">
+              {{ item.labelKey | translate }}
+            </a>
           </li>
         }
       </ul>
     </nav>
 
     <div class="header__actions">
-      <div class="header__locale-badge" title="Primary Language: English / Arabic Mandates Supported">
-        <span>EN</span>
-        <span class="header__locale-divider">/</span>
-        <span class="header__locale-ar">العربية</span>
-      </div>
+      <button
+        type="button"
+        class="header__lang-btn"
+        (click)="toggleLanguage()"
+        [title]="currentLang() === 'ar' ? 'Switch to English' : 'التحويل إلى اللغة العربية'"
+        [attr.aria-label]="currentLang() === 'ar' ? 'Switch to English' : 'التحويل إلى اللغة العربية'"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span class="header__lang-label">{{ currentLang() === 'ar' ? 'English' : 'العربية' }}</span>
+      </button>
+
+      <a
+        routerLink="/dashboard"
+        class="header__dash-btn"
+        title="لوحة التحكم المؤسسية / Dashboard"
+        aria-label="Dashboard"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>{{ 'NAV.DASHBOARD' | translate }}</span>
+      </a>
+
       <a href="#contact" class="btn btn--primary btn--sm header__cta">
-        <span>Consult Us</span>
+        <span>{{ 'NAV.CONSULT_US' | translate }}</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </a>
 
-      <!-- Mobile Hamburger Button -->
       <button
         type="button"
         class="header__hamburger"
@@ -50,7 +76,6 @@
     </div>
   </div>
 
-  <!-- Mobile Navigation Overlay & Drawer -->
   <div
     id="mobile-nav"
     class="header__mobile-menu"
@@ -87,7 +112,7 @@
           @for (item of navItems; track item.href) {
             <li class="header__mobile-item">
               <a [href]="item.href" class="header__mobile-link" (click)="closeMenu()">
-                {{ item.label }}
+                {{ item.labelKey | translate }}
               </a>
             </li>
           }
@@ -95,13 +120,31 @@
       </nav>
 
       <div class="header__mobile-footer">
-        <div class="header__locale-badge header__locale-badge--mobile">
-          <span>EN</span>
-          <span class="header__locale-divider">/</span>
-          <span class="header__locale-ar">العربية</span>
-        </div>
+        <button
+          type="button"
+          class="header__lang-btn header__lang-btn--mobile"
+          (click)="toggleLanguage()"
+          [title]="currentLang() === 'ar' ? 'Switch to English' : 'التحويل إلى اللغة العربية'"
+          [attr.aria-label]="currentLang() === 'ar' ? 'Switch to English' : 'التحويل إلى اللغة العربية'"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="header__lang-label">{{ currentLang() === 'ar' ? 'English' : 'العربية' }}</span>
+        </button>
+        <a routerLink="/dashboard" class="btn btn--secondary btn--sm header__mobile-dash-btn" (click)="closeMenu()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>{{ 'NAV.DASHBOARD' | translate }}</span>
+        </a>
         <a href="#contact" class="btn btn--primary header__mobile-cta" (click)="closeMenu()">
-          <span>Schedule Briefing</span>
+          <span>{{ 'NAV.SCHEDULE_BRIEFING' | translate }}</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>

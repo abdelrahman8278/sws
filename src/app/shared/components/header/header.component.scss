@@ -1,22 +1,20 @@
 @use 'mixins' as *;
 
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   width: 100%;
   height: var(--header-height);
-  background-color: transparent;
-  transition: all var(--transition-normal);
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--color-border);
+  transition: box-shadow var(--transition-normal);
   z-index: 1000;
   display: flex;
   align-items: center;
 
   &--scrolled {
-    background-color: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--color-border);
     box-shadow: var(--shadow-header);
   }
 
@@ -24,7 +22,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
   }
 
   &__brand {
@@ -111,18 +108,44 @@
     gap: var(--space-4);
   }
 
-  &__locale-badge {
+  &__lang-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
+    gap: 7px;
+    padding: 7px 15px;
     border-radius: var(--radius-full);
     background-color: #ffffff;
-    border: 1px solid var(--color-border);
+    border: 1px solid rgba(201, 168, 106, 0.35);
+    color: var(--color-primary);
     font-size: var(--font-xs);
     font-weight: 600;
-    color: var(--color-muted);
-    letter-spacing: 0.04em;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: all var(--transition-fast);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+
+    svg {
+      color: var(--color-accent);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      background-color: rgba(201, 168, 106, 0.12);
+      border-color: var(--color-accent);
+      color: var(--color-accent-hover, #a38240);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(201, 168, 106, 0.18);
+
+      svg {
+        transform: rotate(25deg) scale(1.1);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
 
     @media (max-width: 960px) {
       display: none;
@@ -130,17 +153,70 @@
 
     &--mobile {
       display: inline-flex;
-      margin-bottom: var(--space-4);
+      width: 100%;
       justify-content: center;
+      padding: 11px 18px;
+      margin-bottom: var(--space-3);
+      font-size: var(--font-sm);
+      font-weight: 600;
+      background-color: rgba(201, 168, 106, 0.08);
+      border: 1px solid rgba(201, 168, 106, 0.35);
+      box-shadow: none;
+
+      &:hover {
+        background-color: rgba(201, 168, 106, 0.16);
+        border-color: var(--color-accent);
+      }
+    }
+  }
+
+  &__dash-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-full);
+    background-color: rgba(201, 168, 106, 0.08);
+    border: 1px solid rgba(201, 168, 106, 0.3);
+    color: var(--color-primary);
+    font-size: var(--font-xs);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+
+    svg {
+      color: var(--color-accent);
+      transition: transform var(--transition-fast);
     }
 
-    &-divider {
-      color: var(--color-border);
+    &:hover {
+      background-color: rgba(201, 168, 106, 0.16);
+      border-color: var(--color-accent);
+      color: var(--color-accent-hover);
+      transform: translateY(-1px);
+
+      svg {
+        transform: rotate(15deg);
+      }
     }
 
-    &-ar {
-      font-size: 0.95em;
-      direction: rtl;
+    @media (max-width: 960px) {
+      display: none;
+    }
+  }
+
+  &__mobile-dash-btn {
+    width: 100%;
+    margin-bottom: var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-color: rgba(201, 168, 106, 0.4);
+    color: var(--color-primary);
+
+    svg {
+      color: var(--color-accent);
     }
   }
 
@@ -195,7 +271,6 @@
     }
   }
 
-  /* Mobile Drawer Menu */
   &__mobile-menu {
     position: fixed;
     top: 0;
@@ -244,10 +319,26 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: -8px 0 32px rgba(16, 24, 39, 0.12);
-    transform: translateX(100%);
-    transition: transform var(--transition-normal);
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(201, 168, 106, 0.4) transparent;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(201, 168, 106, 0.35);
+      border-radius: 999px;
+
+      &:hover {
+        background: rgba(201, 168, 106, 0.7);
+      }
+    }
   }
 
   &__mobile-top {

@@ -4,10 +4,40 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 168, 106, 0.4) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 106, 0.35);
+  border-radius: 999px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(201, 168, 106, 0.75);
+  }
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 16px);
 }
 
 html {
-  scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
 }
@@ -72,9 +102,18 @@ a {
 }
 
 /* Section Spacing & Anchoring */
+.section,
+.hero,
+#hero,
+#about,
+#services,
+#approach,
+#contact {
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
 .section {
   padding-block: var(--section-spacing);
-  scroll-margin-top: var(--header-height);
   position: relative;
 }
 
@@ -237,3 +276,54 @@ h6 {
   color: var(--color-text-secondary);
   box-shadow: var(--shadow-sm);
 }
+
+/* RTL Language Support */
+html[dir="rtl"] {
+  body {
+    font-family: 'Cairo', var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cairo', var(--font-heading);
+    letter-spacing: normal;
+  }
+
+  .btn svg {
+    transform: scaleX(-1);
+  }
+
+  .btn:hover svg {
+    transform: scaleX(-1) translateX(-3px);
+  }
+
+  .service-card__arrow {
+    transform: scaleX(-1);
+  }
+
+  .service-card:hover .service-card__arrow {
+    transform: scaleX(-1) translateX(-4px);
+  }
+
+  .about__lead {
+    border-left: none;
+    border-right: 3px solid var(--color-accent);
+    padding-left: 0;
+    padding-right: var(--space-4);
+  }
+
+  .header__mobile-panel {
+    right: auto;
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  .header__mobile-menu--open .header__mobile-panel {
+    transform: translateX(0);
+  }
+
+  .scroll-top {
+    right: auto;
+    left: 28px;
+  }
+}
+

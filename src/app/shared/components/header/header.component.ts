@@ -2,24 +2,31 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostListener,
+  inject,
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { NAVIGATION_ITEMS } from '../../../data/navigation.data';
 import { NavItem } from '../../../core/models/navigation.model';
+import { TranslationService } from '../../../core/services/translation.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
+  private readonly translationService = inject(TranslationService);
+
   readonly navItems: readonly NavItem[] = NAVIGATION_ITEMS;
   readonly isMenuOpen = signal(false);
   readonly isScrolled = signal(false);
+  readonly currentLang = this.translationService.currentLang;
 
   @HostListener('window:scroll')
   onWindowScroll(): void {
@@ -33,6 +40,10 @@ export class HeaderComponent {
     if (this.isMenuOpen()) {
       this.closeMenu();
     }
+  }
+
+  toggleLanguage(): void {
+    this.translationService.toggleLanguage();
   }
 
   toggleMenu(): void {

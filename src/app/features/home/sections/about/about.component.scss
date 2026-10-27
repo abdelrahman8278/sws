@@ -46,7 +46,6 @@
     margin-bottom: var(--space-4);
   }
 
-  /* Two Pillars */
   &__pillars {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -96,7 +95,6 @@
     color: var(--color-muted);
   }
 
-  /* Right Visual Column */
   &__visual {
     width: 100%;
   }

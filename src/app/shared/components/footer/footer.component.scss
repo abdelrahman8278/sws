@@ -72,10 +72,36 @@
     font-size: var(--font-xs);
     font-weight: 500;
     color: #cbd5e1;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    cursor: pointer;
 
     svg {
       color: var(--color-accent);
+      transition: transform var(--transition-fast);
     }
+
+    &:hover {
+      background-color: rgba(201, 168, 106, 0.14);
+      border-color: rgba(201, 168, 106, 0.4);
+      color: #ffffff;
+      transform: translateY(-1px);
+
+      svg {
+        transform: scale(1.15);
+      }
+
+      .footer__location-arrow {
+        transform: translate(2px, -2px);
+        color: var(--color-accent);
+      }
+    }
+  }
+
+  &__location-arrow {
+    font-size: 11px;
+    color: #94a3b8;
+    transition: transform var(--transition-fast), color var(--transition-fast);
   }
 
   &__heading {
@@ -139,5 +165,31 @@
   &__copyright,
   &__jurisdiction {
     margin: 0;
+  }
+
+  &__bottom-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__bottom-divider {
+    color: #475569;
+  }
+
+  &__admin-portal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: var(--font-xs);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+
+    &:hover {
+      color: var(--color-accent);
+      transform: translateY(-1px);
+    }
   }
 }

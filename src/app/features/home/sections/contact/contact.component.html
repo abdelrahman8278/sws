@@ -1,14 +1,13 @@
 <section id="contact" class="section contact" aria-labelledby="contact-title">
   <div class="container">
     <div class="contact__header">
-      <span class="section-eyebrow">04 / Engagement</span>
-      <h2 id="contact-title" class="contact__title">Let's Create Something Meaningful.</h2>
+      <span class="section-eyebrow">{{ 'CONTACT.EYEBROW' | translate }}</span>
+      <h2 id="contact-title" class="contact__title">{{ 'CONTACT.TITLE' | translate }}</h2>
       <p class="contact__subtitle">
-        Have a project in mind? We'd love to start a conversation.
+        {{ 'CONTACT.SUBTITLE' | translate }}
       </p>
     </div>
 
-    <!-- Official Advisory Protocol Container -->
     <div class="contact__card">
       <div class="contact__card-body">
         <div class="contact__protocol">
@@ -19,9 +18,9 @@
             </svg>
           </div>
           <div class="contact__protocol-text">
-            <span class="contact__protocol-label">OFFICIAL ADVISORY PROTOCOL</span>
+            <span class="contact__protocol-label">{{ 'CONTACT.PROTOCOL_LABEL' | translate }}</span>
             <p class="contact__protocol-desc">
-              Official verified channels: direct executive briefing request and portal write-in channels pending launch approval.
+              {{ 'CONTACT.PROTOCOL_DESC' | translate }}
             </p>
           </div>
         </div>
@@ -33,8 +32,8 @@
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
             <div>
-              <span class="contact__location-title">Office Location</span>
-              <p class="contact__location-val">Abu Dhabi Global Market / Cultural District, Abu Dhabi, UAE</p>
+              <span class="contact__location-title">{{ 'CONTACT.OFFICE_TITLE' | translate }}</span>
+              <p class="contact__location-val">{{ 'CONTACT.OFFICE_VAL' | translate }}</p>
             </div>
           </div>
         </div>
@@ -52,15 +51,14 @@
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <span>Schedule Institutional Briefing</span>
+          <span>{{ 'CONTACT.SCHEDULE_BTN' | translate }}</span>
           <span class="contact__cta-arrow" aria-hidden="true">↗</span>
         </button>
-        <span class="contact__card-note">Available for entity mandates · Direct confidentiality assured</span>
+        <span class="contact__card-note">{{ 'CONTACT.CONFIDENTIALITY_NOTE' | translate }}</span>
       </div>
     </div>
   </div>
 
-  <!-- Accessible Briefing Modal Dialog -->
   @if (isBriefingModalOpen()) {
     <div
       class="contact__modal-backdrop"
@@ -75,8 +73,8 @@
     >
       <div class="contact__modal-header">
         <div>
-          <span class="section-eyebrow">Institutional Engagement</span>
-          <h3 id="modal-title" class="contact__modal-title">Schedule Institutional Briefing</h3>
+          <span class="section-eyebrow">{{ 'CONTACT.MODAL_EYEBROW' | translate }}</span>
+          <h3 id="modal-title" class="contact__modal-title">{{ 'CONTACT.MODAL_TITLE' | translate }}</h3>
         </div>
         <button
           type="button"
@@ -98,97 +96,111 @@
           class="contact__form"
           novalidate
         >
-          <div class="contact__form-row">
+          <div class="contact__modal-body">
+            <div class="contact__form-row">
+              <div class="contact__form-group">
+                <label for="entityName" class="contact__label">
+                  {{ 'CONTACT.ENTITY_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="entityName"
+                  type="text"
+                  formControlName="entityName"
+                  class="contact__input"
+                  [class.contact__input--error]="briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched"
+                  [placeholder]="'CONTACT.ENTITY_PLACEHOLDER' | translate"
+                  autocomplete="organization"
+                />
+                @if (briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched) {
+                  <span class="contact__error-msg">{{ 'CONTACT.ENTITY_ERROR' | translate }}</span>
+                }
+              </div>
+
+              <div class="contact__form-group">
+                <label for="representativeName" class="contact__label">
+                  {{ 'CONTACT.REP_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="representativeName"
+                  type="text"
+                  formControlName="representativeName"
+                  class="contact__input"
+                  [class.contact__input--error]="briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched"
+                  [placeholder]="'CONTACT.REP_PLACEHOLDER' | translate"
+                  autocomplete="name"
+                />
+                @if (briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched) {
+                  <span class="contact__error-msg">{{ 'CONTACT.REP_ERROR' | translate }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="contact__form-row">
+              <div class="contact__form-group">
+                <label for="officialEmail" class="contact__label">
+                  {{ 'CONTACT.EMAIL_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="officialEmail"
+                  type="email"
+                  formControlName="officialEmail"
+                  class="contact__input"
+                  [class.contact__input--error]="briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched"
+                  [placeholder]="'CONTACT.EMAIL_PLACEHOLDER' | translate"
+                  autocomplete="email"
+                />
+                @if (briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched) {
+                  <span class="contact__error-msg">{{ 'CONTACT.EMAIL_ERROR' | translate }}</span>
+                }
+              </div>
+
+              <div class="contact__form-group">
+                <label for="mandateScope" class="contact__label">
+                  {{ 'CONTACT.MANDATE_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+                </label>
+                <div class="contact__select-wrapper">
+                  <div class="contact__select-prefix" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                  </div>
+                  <select
+                    id="mandateScope"
+                    formControlName="mandateScope"
+                    class="contact__select"
+                  >
+                    <option value="Brand Strategy">{{ 'SERVICES.TITLE_01' | translate }}</option>
+                    <option value="Digital Marketing">{{ 'SERVICES.TITLE_02' | translate }}</option>
+                    <option value="Creative Campaigns">{{ 'SERVICES.TITLE_03' | translate }}</option>
+                    <option value="Social Media">{{ 'SERVICES.TITLE_04' | translate }}</option>
+                    <option value="Content Production">{{ 'SERVICES.TITLE_05' | translate }}</option>
+                    <option value="Event Marketing">{{ 'SERVICES.TITLE_06' | translate }}</option>
+                  </select>
+                  <div class="contact__select-arrow" aria-hidden="true">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="contact__form-group">
-              <label for="entityName" class="contact__label">
-                Entity / Organization Name <span class="contact__required" aria-hidden="true">*</span>
+              <label for="message" class="contact__label">
+                {{ 'CONTACT.MSG_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
               </label>
-              <input
-                id="entityName"
-                type="text"
-                formControlName="entityName"
-                class="contact__input"
-                [class.contact__input--error]="briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched"
-                placeholder="e.g. Department of Culture & Tourism"
-                autocomplete="organization"
-              />
-              @if (briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched) {
-                <span class="contact__error-msg">Organization or entity name is required.</span>
+              <textarea
+                id="message"
+                formControlName="message"
+                rows="4"
+                class="contact__textarea"
+                [class.contact__input--error]="briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched"
+                [placeholder]="'CONTACT.MSG_PLACEHOLDER' | translate"
+              ></textarea>
+              @if (briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched) {
+                <span class="contact__error-msg">{{ 'CONTACT.MSG_ERROR' | translate }}</span>
               }
             </div>
-
-            <div class="contact__form-group">
-              <label for="representativeName" class="contact__label">
-                Representative Name <span class="contact__required" aria-hidden="true">*</span>
-              </label>
-              <input
-                id="representativeName"
-                type="text"
-                formControlName="representativeName"
-                class="contact__input"
-                [class.contact__input--error]="briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched"
-                placeholder="Your full name"
-                autocomplete="name"
-              />
-              @if (briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched) {
-                <span class="contact__error-msg">Representative name is required.</span>
-              }
-            </div>
-          </div>
-
-          <div class="contact__form-row">
-            <div class="contact__form-group">
-              <label for="officialEmail" class="contact__label">
-                Official Institutional Email <span class="contact__required" aria-hidden="true">*</span>
-              </label>
-              <input
-                id="officialEmail"
-                type="email"
-                formControlName="officialEmail"
-                class="contact__input"
-                [class.contact__input--error]="briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched"
-                placeholder="name@entity.gov.ae or enterprise.ae"
-                autocomplete="email"
-              />
-              @if (briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched) {
-                <span class="contact__error-msg">Please provide a valid official email address.</span>
-              }
-            </div>
-
-            <div class="contact__form-group">
-              <label for="mandateScope" class="contact__label">
-                Mandate Focus <span class="contact__required" aria-hidden="true">*</span>
-              </label>
-              <select
-                id="mandateScope"
-                formControlName="mandateScope"
-                class="contact__select"
-              >
-                <option value="Brand Strategy">Brand Strategy & Governance</option>
-                <option value="Digital Marketing">Digital Marketing & Architecture</option>
-                <option value="Creative Campaigns">Creative Campaigns & Resonance</option>
-                <option value="Social Media">Executive Dialogue & Social Media</option>
-                <option value="Content Production">Cinema-grade Content & Archives</option>
-                <option value="Event Marketing">State-level Event & Ceremonial</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="contact__form-group">
-            <label for="message" class="contact__label">
-              Briefing Objectives &amp; Scope <span class="contact__required" aria-hidden="true">*</span>
-            </label>
-            <textarea
-              id="message"
-              formControlName="message"
-              rows="4"
-              class="contact__textarea"
-              [class.contact__input--error]="briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched"
-              placeholder="Outline project scope, timeline expectations, and strategic objectives..."
-            ></textarea>
-            @if (briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched) {
-              <span class="contact__error-msg">Briefing objectives must be at least 10 characters.</span>
-            }
           </div>
 
           <div class="contact__form-actions">
@@ -197,13 +209,13 @@
               class="btn btn--secondary"
               (click)="closeBriefingModal()"
             >
-              Cancel
+              {{ 'CONTACT.CANCEL_BTN' | translate }}
             </button>
             <button
               type="submit"
               class="btn btn--primary"
             >
-              <span>Submit Briefing Request</span>
+              <span>{{ 'CONTACT.SUBMIT_BTN' | translate }}</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
@@ -211,27 +223,28 @@
           </div>
         </form>
       } @else {
-        <div class="contact__success">
-          <div class="contact__success-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
+        <div class="contact__modal-body">
+          <div class="contact__success">
+            <div class="contact__success-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h4 class="contact__success-title">{{ 'CONTACT.SUCCESS_TITLE' | translate }}</h4>
+            <p class="contact__success-desc">
+              {{ 'CONTACT.SUCCESS_P1' | translate }}
+              <strong>{{ briefingForm.get('entityName')?.value }}</strong>
+              {{ 'CONTACT.SUCCESS_P2' | translate }}
+              <strong>{{ briefingForm.get('officialEmail')?.value }}</strong>.
+            </p>
+            <button
+              type="button"
+              class="btn btn--primary"
+              (click)="resetForm()"
+            >
+              {{ 'CONTACT.CLOSE_CONFIRM_BTN' | translate }}
+            </button>
           </div>
-          <h4 class="contact__success-title">Briefing Request Received</h4>
-          <p class="contact__success-desc">
-            Thank you for reaching out. Your institutional briefing inquiry for
-            <strong>{{ briefingForm.get('entityName')?.value }}</strong>
-            has been registered in accordance with our advisory protocol.
-            Our leadership team will review the mandate requirements and follow up via
-            <strong>{{ briefingForm.get('officialEmail')?.value }}</strong>.
-          </p>
-          <button
-            type="button"
-            class="btn btn--primary"
-            (click)="resetForm()"
-          >
-            Close Confirmation
-          </button>
         </div>
       }
     </div>

@@ -1,15 +1,15 @@
 <section id="services" class="section services" aria-labelledby="services-title">
   <div class="container">
     <div class="services__header">
-      <span class="section-eyebrow">02 / Expertise</span>
-      <h2 id="services-title" class="services__title">What We Can Create Together</h2>
+      <span class="section-eyebrow">{{ 'SERVICES.EYEBROW' | translate }}</span>
+      <h2 id="services-title" class="services__title">{{ 'SERVICES.TITLE' | translate }}</h2>
       <p class="services__subtitle">
-        Provisional service categories curated for public sector mandates, sovereign entities, and enterprise transformations across the United Arab Emirates.
+        {{ 'SERVICES.SUBTITLE' | translate }}
       </p>
     </div>
 
     <div class="services__grid">
-      @for (service of services; track service.id) {
+      @for (service of services(); track service.id) {
         <app-service-card [service]="service" />
       }
     </div>

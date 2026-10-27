@@ -1,53 +1,59 @@
 <section id="hero" class="hero" aria-labelledby="hero-title">
   <div class="container hero__container">
-    <!-- Left Column: Content -->
     <div class="hero__content">
       <div class="section-eyebrow">
-        <span>Strategic Marketing &amp; Institutional Creative</span>
+        <span>{{ 'HERO.EYEBROW' | translate }}</span>
       </div>
 
       <h1 id="hero-title" class="hero__title">
-        Ideas That Inspire.<br>
-        Experiences That<br>
-        <span class="hero__title-accent">Matter.</span>
+        {{ 'HERO.TITLE_LINE1' | translate }}<br>
+        {{ 'HERO.TITLE_LINE2' | translate }}<br>
+        <span class="hero__title-accent">{{ 'HERO.TITLE_ACCENT' | translate }}</span>
       </h1>
 
       <p class="hero__description">
-        We bring strategy, creativity, and digital thinking together to help organizations communicate with clarity and impact.
+        {{ 'HERO.DESCRIPTION' | translate }}
       </p>
 
       <div class="hero__cta-group">
         <a href="#services" class="btn btn--primary btn--lg hero__primary-cta">
-          <span>Explore Our Services</span>
+          <span>{{ 'HERO.CTA_EXPLORE' | translate }}</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
 
         <a href="#about" class="btn btn--secondary btn--lg hero__secondary-cta">
-          <span>About Stellar Media</span>
+          <span>{{ 'HERO.CTA_ABOUT' | translate }}</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
       </div>
 
-      <div class="hero__badge">
+      <a
+        href="https://maps.google.com/?q=Abu+Dhabi,+United+Arab+Emirates"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hero__badge"
+        title="View Abu Dhabi on Google Maps / عرض الموقع على الخريطة"
+        aria-label="View Abu Dhabi, United Arab Emirates location on Google Maps"
+      >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"></circle>
           <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
           <path d="M2 12h20"></path>
         </svg>
-        <span>Geographic Mandate: Abu Dhabi, United Arab Emirates</span>
-      </div>
+        <span>{{ 'HERO.MANDATE' | translate }}</span>
+        <span class="hero__badge-arrow" aria-hidden="true">↗</span>
+      </a>
     </div>
 
-    <!-- Right Column: Visual Artwork -->
     <div class="hero__visual">
       <div class="hero__image-wrapper">
         <img
           src="assets/images/louvre-abu-dhabi.jpg"
-          alt="Louvre Abu Dhabi dome reflecting over coastal waters at dusk, representing architectural creativity in Abu Dhabi"
+          [alt]="'HERO.ARTWORK_ALT' | translate"
           class="hero__image"
           width="1024"
           height="576"
@@ -60,7 +66,7 @@
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
-            <span>CREATIVE MANDATE: SAADIYAT, ABU DHABI</span>
+            <span>{{ 'HERO.ARTWORK_TAG' | translate }}</span>
           </div>
         </div>
       </div>
