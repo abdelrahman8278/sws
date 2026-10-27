@@ -1,0 +1,13 @@
+# Stellar Media — Search Engine Directives
+User-agent: *
+Allow: /
+Allow: /assets/
+
+# Disallow private and administrative areas
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /login/
+
+# XML Sitemap location
+Sitemap: https://stellarmedia.ae/sitemap.xml

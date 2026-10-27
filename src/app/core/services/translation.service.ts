@@ -1,5 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Title, Meta } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
 
 export type SupportedLanguage = 'en' | 'ar';
@@ -9,6 +10,8 @@ export type SupportedLanguage = 'en' | 'ar';
 })
 export class TranslationService {
   private readonly http = inject(HttpClient);
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
 
   readonly currentLang = signal<SupportedLanguage>('en');
   readonly isLoaded = signal<boolean>(false);
@@ -41,6 +44,26 @@ export class TranslationService {
       if (typeof document !== 'undefined') {
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+        if (lang === 'ar') {
+          this.titleService.setTitle('ستيلار ميديا | التسويق الاستراتيجي والإبداع المؤسسي — أبوظبي');
+          this.metaService.updateTag({
+            name: 'description',
+            content: 'ستيلار ميديا هي وكالة تسويق رائدة مقرها أبوظبي، متخصصة في هندسة استراتيجيات الاتصال للجهات الحكومية والشركات الكبرى في دولة الإمارات.',
+          });
+          this.metaService.updateTag({ property: 'og:title', content: 'ستيلار ميديا | التسويق الاستراتيجي والإبداع المؤسسي — أبوظبي' });
+          this.metaService.updateTag({ property: 'og:description', content: 'نجمع بين الاستراتيجية والإبداع والفكر الرقمي لمساعدة المؤسسات على التواصل بوضوح وتأثير استثنائي.' });
+          this.metaService.updateTag({ property: 'og:locale', content: 'ar_AE' });
+        } else {
+          this.titleService.setTitle('Stellar Media | Strategic Marketing & Institutional Creative — Abu Dhabi');
+          this.metaService.updateTag({
+            name: 'description',
+            content: 'Stellar Media is a premier marketing agency based in Abu Dhabi, UAE, engineering communication architectures for government entities and major brands.',
+          });
+          this.metaService.updateTag({ property: 'og:title', content: 'Stellar Media | Strategic Marketing & Institutional Creative — Abu Dhabi' });
+          this.metaService.updateTag({ property: 'og:description', content: 'We bring strategy, creativity, and digital thinking together to help organizations communicate with clarity and impact.' });
+          this.metaService.updateTag({ property: 'og:locale', content: 'en_US' });
+        }
       }
 
       if (typeof window !== 'undefined' && window.localStorage) {
