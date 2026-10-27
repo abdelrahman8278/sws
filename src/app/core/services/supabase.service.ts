@@ -21,6 +21,9 @@ export class SupabaseService {
   readonly user = signal<User | null>(null);
   readonly session = signal<Session | null>(null);
   readonly isLoading = signal(false);
+  readonly isLoadingServices = signal(false);
+  readonly isLoadingBriefings = signal(false);
+  readonly isLoadingApproach = signal(false);
 
   readonly services = signal<AgencyService[]>([...AGENCY_SERVICES]);
   readonly approachSteps = signal<ApproachStep[]>([...APPROACH_STEPS]);
@@ -181,6 +184,7 @@ export class SupabaseService {
   }
 
   async signOut(): Promise<void> {
+    await new Promise((r) => setTimeout(r, 300));
     if (this.supabase && this.isConfigured()) {
       try {
         await this.supabase.auth.signOut();
@@ -191,10 +195,16 @@ export class SupabaseService {
     this.clearSessionFromStorage();
   }
 
-  async fetchServices(): Promise<void> {
-    if (!this.supabase || !this.isConfigured()) return;
-
+  async fetchServices(forceDelay = false): Promise<void> {
+    this.isLoadingServices.set(true);
     try {
+      if (!this.supabase || !this.isConfigured()) {
+        if (forceDelay) {
+          await new Promise((r) => setTimeout(r, 450));
+        }
+        return;
+      }
+
       const { data, error } = await this.supabase
         .from('services')
         .select('*')
@@ -226,11 +236,14 @@ export class SupabaseService {
       }
     } catch (err) {
       console.warn('Error fetching services from Supabase:', err);
+    } finally {
+      this.isLoadingServices.set(false);
     }
   }
 
   async saveService(service: Partial<AgencyService>): Promise<{ success: boolean; error?: string }> {
     if (!this.supabase || !this.isConfigured()) {
+      await new Promise((r) => setTimeout(r, 400));
       this.services.update((list) => {
         const idx = list.findIndex((s) => s.id === service.id);
         if (idx >= 0) {
@@ -271,6 +284,7 @@ export class SupabaseService {
 
   async deleteService(id: string): Promise<boolean> {
     if (!this.supabase || !this.isConfigured()) {
+      await new Promise((r) => setTimeout(r, 350));
       this.services.update((list) => list.filter((s) => s.id !== id));
       return true;
     }
@@ -283,10 +297,16 @@ export class SupabaseService {
     return false;
   }
 
-  async fetchApproachSteps(): Promise<void> {
-    if (!this.supabase || !this.isConfigured()) return;
-
+  async fetchApproachSteps(forceDelay = false): Promise<void> {
+    this.isLoadingApproach.set(true);
     try {
+      if (!this.supabase || !this.isConfigured()) {
+        if (forceDelay) {
+          await new Promise((r) => setTimeout(r, 450));
+        }
+        return;
+      }
+
       const { data, error } = await this.supabase
         .from('approach_steps')
         .select('*')
@@ -306,15 +326,21 @@ export class SupabaseService {
       }
     } catch (err) {
       console.warn('Error fetching approach steps from Supabase:', err);
+    } finally {
+      this.isLoadingApproach.set(false);
     }
   }
 
-  async fetchBriefings(): Promise<void> {
-    if (!this.supabase || !this.isConfigured()) {
-      return;
-    }
-
+  async fetchBriefings(forceDelay = false): Promise<void> {
+    this.isLoadingBriefings.set(true);
     try {
+      if (!this.supabase || !this.isConfigured()) {
+        if (forceDelay) {
+          await new Promise((r) => setTimeout(r, 450));
+        }
+        return;
+      }
+
       const { data, error } = await this.supabase
         .from('briefings')
         .select('*')
@@ -325,11 +351,22 @@ export class SupabaseService {
       }
     } catch (err) {
       console.warn('Error fetching briefings:', err);
+    } finally {
+      this.isLoadingBriefings.set(false);
     }
+  }
+
+  async refreshAll(): Promise<void> {
+    await Promise.all([
+      this.fetchServices(true),
+      this.fetchBriefings(true),
+      this.fetchApproachSteps(),
+    ]);
   }
 
   async insertBriefing(dto: CreateBriefingDto): Promise<{ success: boolean; error?: string }> {
     if (!this.supabase || !this.isConfigured()) {
+      await new Promise((r) => setTimeout(r, 500));
       const mockBriefing: Briefing = {
         id: 'brief-' + Date.now(),
         ...dto,
@@ -386,6 +423,7 @@ export class SupabaseService {
 
   async deleteBriefing(id: string): Promise<boolean> {
     if (!this.supabase || !this.isConfigured()) {
+      await new Promise((r) => setTimeout(r, 350));
       this.briefings.update((list) => list.filter((b) => b.id !== id));
       return true;
     }

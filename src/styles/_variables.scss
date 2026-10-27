@@ -1,10 +1,13 @@
 :root {
-  /* Color Palette */
+  /* Color Palette (Default: Royal Gold) */
   --color-primary: #101827;
   --color-secondary: #2563eb;
   --color-accent: #c9a86a;
   --color-accent-hover: #b59354;
   --color-accent-subtle: rgba(201, 168, 106, 0.12);
+  --color-accent-border: rgba(201, 168, 106, 0.25);
+  --color-accent-light: #e2c285;
+  --color-accent-glow: rgba(201, 168, 106, 0.35);
 
   --color-background: #f8fafc;
   --color-surface: #ffffff;
@@ -15,6 +18,12 @@
   --color-muted: #64748b;
   --color-border: #e2e8f0;
   --color-border-subtle: #edf2f7;
+
+  /* Dashboard system colors */
+  --dash-bg: #0b1120;
+  --dash-surface: rgba(15, 23, 42, 0.85);
+  --dash-card: rgba(30, 41, 59, 0.6);
+  --dash-border: rgba(255, 255, 255, 0.08);
 
   /* Typography */
   --font-heading: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -65,3 +74,83 @@
   --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* System Themes */
+[data-theme='gold'] {
+  --color-accent: #c9a86a;
+  --color-accent-hover: #b59354;
+  --color-accent-subtle: rgba(201, 168, 106, 0.12);
+  --color-accent-border: rgba(201, 168, 106, 0.25);
+  --color-accent-light: #e2c285;
+  --color-accent-glow: rgba(201, 168, 106, 0.35);
+
+  --dash-bg: #0b1120;
+  --dash-surface: rgba(15, 23, 42, 0.85);
+  --dash-card: rgba(30, 41, 59, 0.6);
+}
+
+[data-theme='blue'] {
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+  --color-accent-subtle: rgba(59, 130, 246, 0.12);
+  --color-accent-border: rgba(59, 130, 246, 0.25);
+  --color-accent-light: #93c5fd;
+  --color-accent-glow: rgba(59, 130, 246, 0.35);
+
+  --dash-bg: #060e1d;
+  --dash-surface: rgba(11, 23, 46, 0.88);
+  --dash-card: rgba(18, 35, 71, 0.6);
+}
+
+[data-theme='emerald'] {
+  --color-accent: #10b981;
+  --color-accent-hover: #059669;
+  --color-accent-subtle: rgba(16, 185, 129, 0.12);
+  --color-accent-border: rgba(16, 185, 129, 0.25);
+  --color-accent-light: #6ee7b7;
+  --color-accent-glow: rgba(16, 185, 129, 0.35);
+
+  --dash-bg: #05140f;
+  --dash-surface: rgba(8, 32, 24, 0.88);
+  --dash-card: rgba(13, 50, 37, 0.6);
+}
+
+[data-theme='crimson'] {
+  --color-accent: #f43f5e;
+  --color-accent-hover: #e11d48;
+  --color-accent-subtle: rgba(244, 63, 94, 0.12);
+  --color-accent-border: rgba(244, 63, 94, 0.25);
+  --color-accent-light: #fda4af;
+  --color-accent-glow: rgba(244, 63, 94, 0.35);
+
+  --dash-bg: #14070d;
+  --dash-surface: rgba(33, 11, 21, 0.88);
+  --dash-card: rgba(54, 18, 33, 0.6);
+}
+
+[data-theme='amber'] {
+  --color-accent: #f59e0b;
+  --color-accent-hover: #d97706;
+  --color-accent-subtle: rgba(245, 158, 11, 0.12);
+  --color-accent-border: rgba(245, 158, 11, 0.25);
+  --color-accent-light: #fde68a;
+  --color-accent-glow: rgba(245, 158, 11, 0.35);
+
+  --dash-bg: #130c04;
+  --dash-surface: rgba(31, 20, 8, 0.88);
+  --dash-card: rgba(50, 31, 10, 0.6);
+}
+
+[data-theme='purple'] {
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #7c3aed;
+  --color-accent-subtle: rgba(139, 92, 246, 0.12);
+  --color-accent-border: rgba(139, 92, 246, 0.25);
+  --color-accent-light: #c4b5fd;
+  --color-accent-glow: rgba(139, 92, 246, 0.35);
+
+  --dash-bg: #0d081b;
+  --dash-surface: rgba(23, 14, 48, 0.88);
+  --dash-card: rgba(38, 22, 75, 0.6);
+}
+

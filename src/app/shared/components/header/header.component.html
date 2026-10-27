@@ -23,26 +23,27 @@
     </nav>
 
     <div class="header__actions">
+      <app-theme-picker />
       <button
         type="button"
         class="header__lang-btn"
         (click)="toggleLanguage()"
-        [title]="currentLang() === 'ar' ? 'Switch to English' : 'التحويل إلى اللغة العربية'"
-        [attr.aria-label]="currentLang() === 'ar' ? 'Switch to English' : 'التحويل إلى اللغة العربية'"
+        [title]="'DASHBOARD.NAV.SWITCH_LANG' | translate"
+        [attr.aria-label]="'DASHBOARD.NAV.SWITCH_LANG' | translate"
       >
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="2" y1="12" x2="22" y2="12"></line>
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
         </svg>
-        <span class="header__lang-label">{{ currentLang() === 'ar' ? 'English' : 'العربية' }}</span>
+        <span class="header__lang-label">{{ 'DASHBOARD.NAV.LANG_TOGGLE' | translate }}</span>
       </button>
 
       <a
         routerLink="/dashboard"
         class="header__dash-btn"
-        title="لوحة التحكم المؤسسية / Dashboard"
-        aria-label="Dashboard"
+        [title]="'NAV.DASHBOARD' | translate"
+        [attr.aria-label]="'NAV.DASHBOARD' | translate"
       >
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7"></rect>
@@ -124,15 +125,15 @@
           type="button"
           class="header__lang-btn header__lang-btn--mobile"
           (click)="toggleLanguage()"
-          [title]="currentLang() === 'ar' ? 'Switch to English' : 'التحويل إلى اللغة العربية'"
-          [attr.aria-label]="currentLang() === 'ar' ? 'Switch to English' : 'التحويل إلى اللغة العربية'"
+          [title]="'DASHBOARD.NAV.SWITCH_LANG' | translate"
+          [attr.aria-label]="'DASHBOARD.NAV.SWITCH_LANG' | translate"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="2" y1="12" x2="22" y2="12"></line>
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
           </svg>
-          <span class="header__lang-label">{{ currentLang() === 'ar' ? 'English' : 'العربية' }}</span>
+          <span class="header__lang-label">{{ 'DASHBOARD.NAV.LANG_TOGGLE' | translate }}</span>
         </button>
         <a routerLink="/dashboard" class="btn btn--secondary btn--sm header__mobile-dash-btn" (click)="closeMenu()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

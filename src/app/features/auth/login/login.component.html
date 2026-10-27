@@ -1,4 +1,4 @@
-<div class="login-page">
+<div class="login-page" [dir]="translationService.currentLang() === 'ar' ? 'rtl' : 'ltr'">
   <div class="login-page__ambient"></div>
 
   <div class="login-card">
@@ -14,10 +14,10 @@
       </a>
       <div class="login-card__badge">
         <span class="login-card__badge-dot"></span>
-        <span>بوابة الإدارة المؤسسية | Administrative Portal</span>
+        <span>{{ 'AUTH.BADGE' | translate }}</span>
       </div>
-      <h1 class="login-card__title">تسجيل الدخول للوحة التحكم</h1>
-      <p class="login-card__subtitle">أدخل بيانات الاعتماد المعتمدة للوصول إلى إدارة المحتوى والطلبات</p>
+      <h1 class="login-card__title">{{ 'AUTH.TITLE' | translate }}</h1>
+      <p class="login-card__subtitle">{{ 'AUTH.SUBTITLE' | translate }}</p>
     </div>
 
     @if (errorMessage()) {
@@ -33,7 +33,7 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form" novalidate>
       <div class="login-form__group">
-        <label for="email" class="login-form__label">البريد الإلكتروني المعتمد</label>
+        <label for="email" class="login-form__label">{{ 'AUTH.EMAIL_LABEL' | translate }}</label>
         <div class="login-form__input-wrapper">
           <input
             id="email"
@@ -41,7 +41,7 @@
             formControlName="email"
             class="login-form__input"
             [class.login-form__input--error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-            placeholder="admin@stellar.ae"
+            [placeholder]="'AUTH.EMAIL_PLACEHOLDER' | translate"
             autocomplete="email"
           />
           <div class="login-form__icon" aria-hidden="true">
@@ -52,12 +52,12 @@
           </div>
         </div>
         @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-          <span class="login-form__error-text">يرجى إدخال بريد إلكتروني صالح</span>
+          <span class="login-form__error-text">{{ 'AUTH.EMAIL_ERROR' | translate }}</span>
         }
       </div>
 
       <div class="login-form__group">
-        <label for="password" class="login-form__label">كلمة المرور</label>
+        <label for="password" class="login-form__label">{{ 'AUTH.PASSWORD_LABEL' | translate }}</label>
         <div class="login-form__input-wrapper">
           <input
             id="password"
@@ -65,14 +65,14 @@
             formControlName="password"
             class="login-form__input login-form__input--password"
             [class.login-form__input--error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-            placeholder="••••••••"
+            [placeholder]="'AUTH.PASSWORD_PLACEHOLDER' | translate"
             autocomplete="current-password"
           />
           <button
             type="button"
             class="login-form__toggle-pwd"
             (click)="togglePasswordVisibility()"
-            [title]="showPassword() ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'"
+            [title]="showPassword() ? ('AUTH.HIDE_PASSWORD' | translate) : ('AUTH.SHOW_PASSWORD' | translate)"
             tabindex="-1"
           >
             @if (showPassword()) {
@@ -89,7 +89,7 @@
           </button>
         </div>
         @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-          <span class="login-form__error-text">كلمة المرور مطلوبة (6 أحرف على الأقل)</span>
+          <span class="login-form__error-text">{{ 'AUTH.PASSWORD_ERROR' | translate }}</span>
         }
       </div>
 
@@ -100,9 +100,9 @@
       >
         @if (supabaseService.isLoading()) {
           <span class="login-form__spinner"></span>
-          <span>جاري التحقق...</span>
+          <span>{{ 'AUTH.AUTHENTICATING' | translate }}</span>
         } @else {
-          <span>دخول لوحة التحكم</span>
+          <span>{{ 'AUTH.SUBMIT_BTN' | translate }}</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
@@ -115,7 +115,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
-        <span>العودة إلى الموقع الرئيسي</span>
+        <span>{{ 'AUTH.BACK_TO_SITE' | translate }}</span>
       </a>
     </div>
   </div>

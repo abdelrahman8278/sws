@@ -15,4 +15,6 @@ import { SupabaseService } from '../../../../core/services/supabase.service';
 export class ServicesComponent {
   private readonly supabaseService = inject(SupabaseService);
   readonly services = this.supabaseService.services;
+  readonly isLoading = this.supabaseService.isLoadingServices;
+  readonly skeletonItems = Array.from({ length: 6 });
 }

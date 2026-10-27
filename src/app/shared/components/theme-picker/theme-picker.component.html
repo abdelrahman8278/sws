@@ -1,0 +1,72 @@
+<div
+  class="theme-picker"
+  (mouseenter)="openDropdown()"
+  (mouseleave)="scheduleClose()"
+  [dir]="translationService.currentLang() === 'ar' ? 'rtl' : 'ltr'"
+>
+  <button
+    type="button"
+    class="theme-picker__trigger"
+    (click)="toggleOpen()"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-label]="'THEME.PICK_THEME' | translate"
+    [title]="'THEME.PICK_THEME' | translate"
+  >
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+      <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+    </svg>
+    <span
+      class="theme-picker__dot"
+      [style.background]="themeService.activeThemeOption().primaryColor"
+      [style.box-shadow]="'0 0 8px ' + themeService.activeThemeOption().primaryColor"
+    ></span>
+    <svg class="theme-picker__chevron" [class.theme-picker__chevron--open]="isOpen()" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
+
+  @if (isOpen()) {
+    <div
+      class="theme-picker__dropdown"
+      role="menu"
+      (mouseenter)="cancelClose()"
+      (mouseleave)="scheduleClose()"
+    >
+      <div class="theme-picker__header">
+        <span class="theme-picker__header-title">{{ 'THEME.CHOOSE_THEME' | translate }}</span>
+      </div>
+
+      <div class="theme-picker__items">
+        @for (theme of themeService.themes; track theme.id) {
+          <button
+            type="button"
+            class="theme-picker__item"
+            [class.theme-picker__item--active]="themeService.currentTheme() === theme.id"
+            (click)="selectTheme(theme.id)"
+            role="menuitem"
+          >
+            <span
+              class="theme-picker__preview"
+              [style.background]="theme.preview"
+              [style.border-color]="theme.primaryColor"
+            ></span>
+
+            <span class="theme-picker__name">
+              {{ translationService.currentLang() === 'ar' ? theme.name_ar : theme.name_en }}
+            </span>
+
+            @if (themeService.currentTheme() === theme.id) {
+              <svg class="theme-picker__check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -13,11 +13,12 @@ import {
 } from '@angular/forms';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { SupabaseService } from '../../../../core/services/supabase.service';
+import { DialogComponent } from '../../../../shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe, DialogComponent],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,19 +63,22 @@ export class ContactComponent {
       return;
     }
 
-    this.isSubmitting.set(true);
-    const formVal = this.briefingForm.value;
+    try {
+      this.isSubmitting.set(true);
+      const formVal = this.briefingForm.value;
 
-    await this.supabaseService.insertBriefing({
-      entity_name: formVal.entityName,
-      representative_name: formVal.representativeName,
-      official_email: formVal.officialEmail,
-      mandate_scope: formVal.mandateScope,
-      message: formVal.message,
-    });
+      await this.supabaseService.insertBriefing({
+        entity_name: formVal.entityName,
+        representative_name: formVal.representativeName,
+        official_email: formVal.officialEmail,
+        mandate_scope: formVal.mandateScope,
+        message: formVal.message,
+      });
 
-    this.isSubmitting.set(false);
-    this.isSubmitted.set(true);
+      this.isSubmitted.set(true);
+    } finally {
+      this.isSubmitting.set(false);
+    }
   }
 
   resetForm(): void {

@@ -59,194 +59,178 @@
     </div>
   </div>
 
-  @if (isBriefingModalOpen()) {
-    <div
-      class="contact__modal-backdrop"
-      (click)="closeBriefingModal()"
-      role="presentation"
-    ></div>
-    <div
-      class="contact__modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-    >
-      <div class="contact__modal-header">
-        <div>
-          <span class="section-eyebrow">{{ 'CONTACT.MODAL_EYEBROW' | translate }}</span>
-          <h3 id="modal-title" class="contact__modal-title">{{ 'CONTACT.MODAL_TITLE' | translate }}</h3>
+  <app-dialog
+    [isOpen]="isBriefingModalOpen()"
+    [theme]="'light'"
+    [maxWidth]="'680px'"
+    [eyebrow]="'CONTACT.MODAL_EYEBROW' | translate"
+    [title]="'CONTACT.MODAL_TITLE' | translate"
+    [hasFooter]="!isSubmitted()"
+    (closed)="closeBriefingModal()"
+  >
+    @if (!isSubmitted()) {
+      <form
+        id="briefingForm"
+        [formGroup]="briefingForm"
+        (ngSubmit)="submitBriefing()"
+        class="contact__form"
+        novalidate
+      >
+        <div class="contact__form-row">
+          <div class="contact__form-group">
+            <label for="entityName" class="contact__label">
+              {{ 'CONTACT.ENTITY_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+            </label>
+            <input
+              id="entityName"
+              type="text"
+              formControlName="entityName"
+              class="contact__input"
+              [class.contact__input--error]="briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched"
+              [placeholder]="'CONTACT.ENTITY_PLACEHOLDER' | translate"
+              autocomplete="organization"
+            />
+            @if (briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched) {
+              <span class="contact__error-msg">{{ 'CONTACT.ENTITY_ERROR' | translate }}</span>
+            }
+          </div>
+
+          <div class="contact__form-group">
+            <label for="representativeName" class="contact__label">
+              {{ 'CONTACT.REP_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+            </label>
+            <input
+              id="representativeName"
+              type="text"
+              formControlName="representativeName"
+              class="contact__input"
+              [class.contact__input--error]="briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched"
+              [placeholder]="'CONTACT.REP_PLACEHOLDER' | translate"
+              autocomplete="name"
+            />
+            @if (briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched) {
+              <span class="contact__error-msg">{{ 'CONTACT.REP_ERROR' | translate }}</span>
+            }
+          </div>
         </div>
+
+        <div class="contact__form-row">
+          <div class="contact__form-group">
+            <label for="officialEmail" class="contact__label">
+              {{ 'CONTACT.EMAIL_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+            </label>
+            <input
+              id="officialEmail"
+              type="email"
+              formControlName="officialEmail"
+              class="contact__input"
+              [class.contact__input--error]="briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched"
+              [placeholder]="'CONTACT.EMAIL_PLACEHOLDER' | translate"
+              autocomplete="email"
+            />
+            @if (briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched) {
+              <span class="contact__error-msg">{{ 'CONTACT.EMAIL_ERROR' | translate }}</span>
+            }
+          </div>
+
+          <div class="contact__form-group">
+            <label for="mandateScope" class="contact__label">
+              {{ 'CONTACT.MANDATE_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+            </label>
+            <div class="contact__select-wrapper">
+              <div class="contact__select-prefix" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <select
+                id="mandateScope"
+                formControlName="mandateScope"
+                class="contact__select"
+              >
+                <option value="Brand Strategy">{{ 'SERVICES.TITLE_01' | translate }}</option>
+                <option value="Digital Marketing">{{ 'SERVICES.TITLE_02' | translate }}</option>
+                <option value="Creative Campaigns">{{ 'SERVICES.TITLE_03' | translate }}</option>
+                <option value="Social Media">{{ 'SERVICES.TITLE_04' | translate }}</option>
+                <option value="Content Production">{{ 'SERVICES.TITLE_05' | translate }}</option>
+                <option value="Event Marketing">{{ 'SERVICES.TITLE_06' | translate }}</option>
+              </select>
+              <div class="contact__select-arrow" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact__form-group">
+          <label for="message" class="contact__label">
+            {{ 'CONTACT.MSG_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id="message"
+            formControlName="message"
+            rows="4"
+            class="contact__textarea"
+            [class.contact__input--error]="briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched"
+            [placeholder]="'CONTACT.MSG_PLACEHOLDER' | translate"
+          ></textarea>
+          @if (briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched) {
+            <span class="contact__error-msg">{{ 'CONTACT.MSG_ERROR' | translate }}</span>
+          }
+        </div>
+      </form>
+    } @else {
+      <div class="contact__success">
+        <div class="contact__success-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h4 class="contact__success-title">{{ 'CONTACT.SUCCESS_TITLE' | translate }}</h4>
+        <p class="contact__success-desc">
+          {{ 'CONTACT.SUCCESS_P1' | translate }}
+          <strong>{{ briefingForm.get('entityName')?.value }}</strong>
+          {{ 'CONTACT.SUCCESS_P2' | translate }}
+          <strong>{{ briefingForm.get('officialEmail')?.value }}</strong>.
+        </p>
         <button
           type="button"
-          class="contact__modal-close"
-          aria-label="Close dialog"
-          (click)="closeBriefingModal()"
+          class="btn btn--primary"
+          (click)="resetForm()"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+          {{ 'CONTACT.CLOSE_CONFIRM_BTN' | translate }}
         </button>
       </div>
+    }
 
-      @if (!isSubmitted()) {
-        <form
-          [formGroup]="briefingForm"
-          (ngSubmit)="submitBriefing()"
-          class="contact__form"
-          novalidate
+    @if (!isSubmitted()) {
+      <div dialog-footer class="contact__form-actions">
+        <button
+          type="button"
+          class="btn btn--secondary"
+          (click)="closeBriefingModal()"
         >
-          <div class="contact__modal-body">
-            <div class="contact__form-row">
-              <div class="contact__form-group">
-                <label for="entityName" class="contact__label">
-                  {{ 'CONTACT.ENTITY_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
-                </label>
-                <input
-                  id="entityName"
-                  type="text"
-                  formControlName="entityName"
-                  class="contact__input"
-                  [class.contact__input--error]="briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched"
-                  [placeholder]="'CONTACT.ENTITY_PLACEHOLDER' | translate"
-                  autocomplete="organization"
-                />
-                @if (briefingForm.get('entityName')?.invalid && briefingForm.get('entityName')?.touched) {
-                  <span class="contact__error-msg">{{ 'CONTACT.ENTITY_ERROR' | translate }}</span>
-                }
-              </div>
-
-              <div class="contact__form-group">
-                <label for="representativeName" class="contact__label">
-                  {{ 'CONTACT.REP_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
-                </label>
-                <input
-                  id="representativeName"
-                  type="text"
-                  formControlName="representativeName"
-                  class="contact__input"
-                  [class.contact__input--error]="briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched"
-                  [placeholder]="'CONTACT.REP_PLACEHOLDER' | translate"
-                  autocomplete="name"
-                />
-                @if (briefingForm.get('representativeName')?.invalid && briefingForm.get('representativeName')?.touched) {
-                  <span class="contact__error-msg">{{ 'CONTACT.REP_ERROR' | translate }}</span>
-                }
-              </div>
-            </div>
-
-            <div class="contact__form-row">
-              <div class="contact__form-group">
-                <label for="officialEmail" class="contact__label">
-                  {{ 'CONTACT.EMAIL_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
-                </label>
-                <input
-                  id="officialEmail"
-                  type="email"
-                  formControlName="officialEmail"
-                  class="contact__input"
-                  [class.contact__input--error]="briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched"
-                  [placeholder]="'CONTACT.EMAIL_PLACEHOLDER' | translate"
-                  autocomplete="email"
-                />
-                @if (briefingForm.get('officialEmail')?.invalid && briefingForm.get('officialEmail')?.touched) {
-                  <span class="contact__error-msg">{{ 'CONTACT.EMAIL_ERROR' | translate }}</span>
-                }
-              </div>
-
-              <div class="contact__form-group">
-                <label for="mandateScope" class="contact__label">
-                  {{ 'CONTACT.MANDATE_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
-                </label>
-                <div class="contact__select-wrapper">
-                  <div class="contact__select-prefix" aria-hidden="true">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                  </div>
-                  <select
-                    id="mandateScope"
-                    formControlName="mandateScope"
-                    class="contact__select"
-                  >
-                    <option value="Brand Strategy">{{ 'SERVICES.TITLE_01' | translate }}</option>
-                    <option value="Digital Marketing">{{ 'SERVICES.TITLE_02' | translate }}</option>
-                    <option value="Creative Campaigns">{{ 'SERVICES.TITLE_03' | translate }}</option>
-                    <option value="Social Media">{{ 'SERVICES.TITLE_04' | translate }}</option>
-                    <option value="Content Production">{{ 'SERVICES.TITLE_05' | translate }}</option>
-                    <option value="Event Marketing">{{ 'SERVICES.TITLE_06' | translate }}</option>
-                  </select>
-                  <div class="contact__select-arrow" aria-hidden="true">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="contact__form-group">
-              <label for="message" class="contact__label">
-                {{ 'CONTACT.MSG_LABEL' | translate }} <span class="contact__required" aria-hidden="true">*</span>
-              </label>
-              <textarea
-                id="message"
-                formControlName="message"
-                rows="4"
-                class="contact__textarea"
-                [class.contact__input--error]="briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched"
-                [placeholder]="'CONTACT.MSG_PLACEHOLDER' | translate"
-              ></textarea>
-              @if (briefingForm.get('message')?.invalid && briefingForm.get('message')?.touched) {
-                <span class="contact__error-msg">{{ 'CONTACT.MSG_ERROR' | translate }}</span>
-              }
-            </div>
-          </div>
-
-          <div class="contact__form-actions">
-            <button
-              type="button"
-              class="btn btn--secondary"
-              (click)="closeBriefingModal()"
-            >
-              {{ 'CONTACT.CANCEL_BTN' | translate }}
-            </button>
-            <button
-              type="submit"
-              class="btn btn--primary"
-            >
-              <span>{{ 'CONTACT.SUBMIT_BTN' | translate }}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
-          </div>
-        </form>
-      } @else {
-        <div class="contact__modal-body">
-          <div class="contact__success">
-            <div class="contact__success-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            </div>
-            <h4 class="contact__success-title">{{ 'CONTACT.SUCCESS_TITLE' | translate }}</h4>
-            <p class="contact__success-desc">
-              {{ 'CONTACT.SUCCESS_P1' | translate }}
-              <strong>{{ briefingForm.get('entityName')?.value }}</strong>
-              {{ 'CONTACT.SUCCESS_P2' | translate }}
-              <strong>{{ briefingForm.get('officialEmail')?.value }}</strong>.
-            </p>
-            <button
-              type="button"
-              class="btn btn--primary"
-              (click)="resetForm()"
-            >
-              {{ 'CONTACT.CLOSE_CONFIRM_BTN' | translate }}
-            </button>
-          </div>
-        </div>
-      }
-    </div>
-  }
+          {{ 'CONTACT.CANCEL_BTN' | translate }}
+        </button>
+        <button
+          form="briefingForm"
+          type="submit"
+          class="btn btn--primary"
+          [disabled]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span>{{ 'CONTACT.SUBMITTING' | translate }}</span>
+          } @else {
+            <span>{{ 'CONTACT.SUBMIT_BTN' | translate }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          }
+        </button>
+      </div>
+    }
+  </app-dialog>
 </section>

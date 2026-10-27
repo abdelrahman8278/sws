@@ -7,35 +7,48 @@
         </a>
         <div class="dash-nav__badge">
           <span class="dash-nav__badge-dot"></span>
-          <span>{{ translationService.currentLang() === 'en' ? 'Institutional Dashboard' : 'لوحة التحكم المؤسسية' }}</span>
+          <span>{{ 'DASHBOARD.NAV.BADGE' | translate }}</span>
         </div>
       </div>
 
       <div class="dash-nav__actions">
-        @if (supabaseService.isConfigured()) {
-          <div class="dash-nav__status dash-nav__status--connected" [title]="translationService.currentLang() === 'en' ? 'Supabase Database Connected' : 'قاعدة بيانات Supabase متصلة'">
-            <span class="dash-nav__status-dot"></span>
-            <span>{{ translationService.currentLang() === 'en' ? 'Supabase Connected' : 'متصل بـ Supabase' }}</span>
-          </div>
-        } @else {
-          <div class="dash-nav__status dash-nav__status--mock" [title]="translationService.currentLang() === 'en' ? 'Local Demo Mode Active' : 'وضع المعاينة المحلي نشط'">
-            <span class="dash-nav__status-dot"></span>
-            <span>{{ translationService.currentLang() === 'en' ? 'Local Demo Mode' : 'وضع المعاينة المحلي' }}</span>
-          </div>
-        }
+        <app-theme-picker />
 
         <button
           type="button"
           class="dash-nav__lang-btn"
           (click)="translationService.toggleLanguage()"
-          [title]="translationService.currentLang() === 'ar' ? 'Switch to English' : 'التحويل للعربية'"
+          [title]="'DASHBOARD.NAV.SWITCH_LANG' | translate"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="2" y1="12" x2="22" y2="12"></line>
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
           </svg>
-          <span>{{ translationService.currentLang() === 'ar' ? 'English' : 'العربية' }}</span>
+          <span>{{ 'DASHBOARD.NAV.LANG_TOGGLE' | translate }}</span>
+        </button>
+
+        <button
+          type="button"
+          class="dash-nav__refresh-btn"
+          (click)="refreshData()"
+          [disabled]="isRefreshing() || supabaseService.isLoadingBriefings() || supabaseService.isLoadingServices()"
+          [title]="'DASHBOARD.NAV.REFRESH' | translate"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            [class.dash-nav__spin]="isRefreshing() || supabaseService.isLoadingBriefings() || supabaseService.isLoadingServices()"
+          >
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>{{ 'DASHBOARD.NAV.REFRESH' | translate }}</span>
         </button>
 
         <a routerLink="/" class="dash-nav__btn-link">
@@ -44,16 +57,25 @@
             <polyline points="15 3 21 3 21 9"></polyline>
             <line x1="10" y1="14" x2="21" y2="3"></line>
           </svg>
-          <span>{{ translationService.currentLang() === 'en' ? 'Public Site' : 'الموقع العام' }}</span>
+          <span>{{ 'DASHBOARD.NAV.PUBLIC_SITE' | translate }}</span>
         </a>
 
-        <button type="button" class="dash-nav__logout-btn" (click)="onLogout()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-          <span>{{ translationService.currentLang() === 'en' ? 'Log Out' : 'تسجيل خروج' }}</span>
+        <button
+          type="button"
+          class="dash-nav__logout-btn"
+          (click)="onLogout()"
+          [disabled]="isLoggingOut()"
+        >
+          @if (isLoggingOut()) {
+            <span class="btn-spinner" aria-hidden="true"></span>
+          } @else {
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          }
+          <span>{{ 'DASHBOARD.NAV.LOGOUT' | translate }}</span>
         </button>
       </div>
     </div>
@@ -63,8 +85,8 @@
     <div class="dash-container">
       <section class="dash-welcome">
         <div>
-          <h1 class="dash-welcome__title">{{ translationService.currentLang() === 'en' ? 'Welcome to the Command & Content Center' : 'مرحباً بك في مركز القيادة والمحتوى' }}</h1>
-          <p class="dash-welcome__sub">{{ translationService.currentLang() === 'en' ? 'Manage Stellar Media institutional content and receive sovereign briefing inquiries' : 'إدارة وتحديث بيانات موقع Stellar Media وتلقي طلبات الإحاطة الحكومية والمؤسسية' }}</p>
+          <h1 class="dash-welcome__title">{{ 'DASHBOARD.WELCOME.TITLE' | translate }}</h1>
+          <p class="dash-welcome__sub">{{ 'DASHBOARD.WELCOME.SUBTITLE' | translate }}</p>
         </div>
       </section>
 
@@ -80,7 +102,7 @@
             </svg>
           </div>
           <div class="dash-stat-card__info">
-            <span class="dash-stat-card__label">{{ translationService.currentLang() === 'en' ? 'Briefing Requests Received' : 'طلبات الإحاطة الواردة' }}</span>
+            <span class="dash-stat-card__label">{{ 'DASHBOARD.STATS.BRIEFINGS' | translate }}</span>
             <strong class="dash-stat-card__val">{{ supabaseService.briefings().length }}</strong>
           </div>
         </div>
@@ -93,7 +115,7 @@
             </svg>
           </div>
           <div class="dash-stat-card__info">
-            <span class="dash-stat-card__label">{{ translationService.currentLang() === 'en' ? 'Strategic Services' : 'الخدمات الاستراتيجية' }}</span>
+            <span class="dash-stat-card__label">{{ 'DASHBOARD.STATS.SERVICES' | translate }}</span>
             <strong class="dash-stat-card__val">{{ supabaseService.services().length }}</strong>
           </div>
         </div>
@@ -106,7 +128,7 @@
             </svg>
           </div>
           <div class="dash-stat-card__info">
-            <span class="dash-stat-card__label">{{ translationService.currentLang() === 'en' ? 'Methodology Phases' : 'مراحل المنهجية المؤسسية' }}</span>
+            <span class="dash-stat-card__label">{{ 'DASHBOARD.STATS.METHODOLOGY' | translate }}</span>
             <strong class="dash-stat-card__val">{{ supabaseService.approachSteps().length }}</strong>
           </div>
         </div>
@@ -120,12 +142,12 @@
             </svg>
           </div>
           <div class="dash-stat-card__info">
-            <span class="dash-stat-card__label">{{ translationService.currentLang() === 'en' ? 'Supabase Database' : 'قاعدة بيانات Supabase' }}</span>
+            <span class="dash-stat-card__label">{{ 'DASHBOARD.STATS.DATABASE' | translate }}</span>
             <strong class="dash-stat-card__val">
               @if (supabaseService.isConfigured()) {
-                {{ translationService.currentLang() === 'en' ? 'Active & Synced' : 'نشط ومتزامن' }}
+                {{ 'DASHBOARD.STATS.SYNCED' | translate }}
               } @else {
-                {{ translationService.currentLang() === 'en' ? 'Awaiting Keys' : 'بانتظار المفاتيح' }}
+                {{ 'DASHBOARD.STATS.AWAITING_KEYS' | translate }}
               }
             </strong>
           </div>
@@ -143,7 +165,7 @@
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
             <polyline points="22,6 12,13 2,6"></polyline>
           </svg>
-          <span>{{ translationService.currentLang() === 'en' ? 'Briefing Requests' : 'طلبات الإحاطة والمشاريع' }}</span>
+          <span>{{ 'DASHBOARD.TABS.BRIEFINGS' | translate }}</span>
           <span class="dash-tab__count">{{ supabaseService.briefings().length }}</span>
         </button>
 
@@ -158,7 +180,7 @@
             <polyline points="2 17 12 22 22 17"></polyline>
             <polyline points="2 12 12 17 22 12"></polyline>
           </svg>
-          <span>{{ translationService.currentLang() === 'en' ? 'Services Management' : 'إدارة الخدمات' }}</span>
+          <span>{{ 'DASHBOARD.TABS.SERVICES' | translate }}</span>
           <span class="dash-tab__count">{{ supabaseService.services().length }}</span>
         </button>
 
@@ -173,41 +195,74 @@
             <line x1="12" y1="20" x2="12" y2="4"></line>
             <line x1="6" y1="20" x2="6" y2="14"></line>
           </svg>
-          <span>{{ translationService.currentLang() === 'en' ? 'Methodology' : 'منهجية العمل' }}</span>
+          <span>{{ 'DASHBOARD.TABS.METHODOLOGY' | translate }}</span>
         </button>
-
       </div>
 
       @if (activeTab() === 'briefings') {
         <section class="dash-panel">
           <div class="dash-panel__header">
             <div>
-              <h2 class="dash-panel__title">{{ translationService.currentLang() === 'en' ? 'Received Briefing Requests' : 'طلبات الإحاطة والمشاريع المستلمة' }}</h2>
-              <p class="dash-panel__sub">{{ translationService.currentLang() === 'en' ? 'Inquiries submitted via the institutional contact form on the website' : 'الطلبات المسجلة من نموذج التواصل في الموقع' }}</p>
+              <h2 class="dash-panel__title">{{ 'DASHBOARD.BRIEFINGS.TITLE' | translate }}</h2>
+              <p class="dash-panel__sub">{{ 'DASHBOARD.BRIEFINGS.SUBTITLE' | translate }}</p>
             </div>
           </div>
 
-          @if (supabaseService.briefings().length === 0) {
+          @if (supabaseService.isLoadingBriefings()) {
+            <div class="dash-table-wrapper">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_ENTITY' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_REP' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_EMAIL' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_MANDATE' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_STATUS' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_DATE' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_ACTIONS' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (_ of skeletonRows; track $index) {
+                    <tr>
+                      <td><span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--w70"></span></td>
+                      <td><span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--w60"></span></td>
+                      <td><span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--w80"></span></td>
+                      <td><span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--badge"></span></td>
+                      <td><span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--select"></span></td>
+                      <td><span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--w50"></span></td>
+                      <td>
+                        <div class="dash-actions-cell">
+                          <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--btn"></span>
+                          <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--btn"></span>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else if (supabaseService.briefings().length === 0) {
             <div class="dash-empty">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M22 12h-6l-2 3h-4l-2-3H2"></path>
                 <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
               </svg>
-              <h3>{{ translationService.currentLang() === 'en' ? 'No Briefing Requests Yet' : 'لا توجد طلبات إحاطة حالياً' }}</h3>
-              <p>{{ translationService.currentLang() === 'en' ? 'When visitors submit the Institutional Briefing form on the website, their inquiries will appear here in real time.' : 'عندما يقوم أحد الزوار بملء نموذج "طلب إحاطة رسمية" في الموقع، ستظهر بياناته هنا فوراً.' }}</p>
+              <h3>{{ 'DASHBOARD.BRIEFINGS.EMPTY_TITLE' | translate }}</h3>
+              <p>{{ 'DASHBOARD.BRIEFINGS.EMPTY_DESC' | translate }}</p>
             </div>
           } @else {
             <div class="dash-table-wrapper">
               <table class="dash-table">
                 <thead>
                   <tr>
-                    <th>{{ translationService.currentLang() === 'en' ? 'Entity / Organization' : 'الجهة / المؤسسة' }}</th>
-                    <th>{{ translationService.currentLang() === 'en' ? 'Representative' : 'المسؤول' }}</th>
-                    <th>{{ translationService.currentLang() === 'en' ? 'Official Email' : 'البريد الرسمي' }}</th>
-                    <th>{{ translationService.currentLang() === 'en' ? 'Mandate Scope' : 'نطاق المهمة' }}</th>
-                    <th>{{ translationService.currentLang() === 'en' ? 'Status' : 'الحالة' }}</th>
-                    <th>{{ translationService.currentLang() === 'en' ? 'Submission Date' : 'تاريخ الإرسال' }}</th>
-                    <th>{{ translationService.currentLang() === 'en' ? 'Actions' : 'الإجراءات' }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_ENTITY' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_REP' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_EMAIL' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_MANDATE' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_STATUS' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_DATE' | translate }}</th>
+                    <th>{{ 'DASHBOARD.BRIEFINGS.COL_ACTIONS' | translate }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -228,9 +283,9 @@
                           [class.dash-status-select--review]="briefing.status === 'in_review'"
                           [class.dash-status-select--done]="briefing.status === 'completed'"
                         >
-                          <option value="new">{{ translationService.currentLang() === 'en' ? 'New' : 'جديد' }}</option>
-                          <option value="in_review">{{ translationService.currentLang() === 'en' ? 'In Review' : 'قيد المراجعة' }}</option>
-                          <option value="completed">{{ translationService.currentLang() === 'en' ? 'Completed' : 'مكتمل' }}</option>
+                          <option value="new">{{ 'DASHBOARD.BRIEFINGS.STATUS_NEW' | translate }}</option>
+                          <option value="in_review">{{ 'DASHBOARD.BRIEFINGS.STATUS_IN_REVIEW' | translate }}</option>
+                          <option value="completed">{{ 'DASHBOARD.BRIEFINGS.STATUS_COMPLETED' | translate }}</option>
                         </select>
                       </td>
                       <td class="text-secondary text-sm">{{ briefing.created_at | date:'short' }}</td>
@@ -240,7 +295,7 @@
                             type="button"
                             class="dash-btn-icon"
                             (click)="openBriefingDetails(briefing)"
-                            [title]="translationService.currentLang() === 'en' ? 'View Details' : 'عرض التفاصيل'"
+                            [title]="'DASHBOARD.BRIEFINGS.VIEW_DETAILS' | translate"
                           >
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -251,7 +306,7 @@
                             type="button"
                             class="dash-btn-icon dash-btn-icon--danger"
                             (click)="openDeleteBriefingConfirm(briefing)"
-                            [title]="translationService.currentLang() === 'en' ? 'Delete' : 'حذف'"
+                            [title]="'DASHBOARD.BRIEFINGS.DELETE' | translate"
                           >
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                               <polyline points="3 6 5 6 21 6"></polyline>
@@ -273,82 +328,105 @@
         <section class="dash-panel">
           <div class="dash-panel__header">
             <div>
-              <h2 class="dash-panel__title">{{ translationService.currentLang() === 'en' ? 'Strategic Services Management' : 'إدارة الخدمات الاستراتيجية' }}</h2>
-              <p class="dash-panel__sub">{{ translationService.currentLang() === 'en' ? 'Active services showcased in the public "Expertise & Mandates" section' : 'الخدمات المعروضة في قسم "مجالات الخبرة والمهمات" على الموقع' }}</p>
+              <h2 class="dash-panel__title">{{ 'DASHBOARD.SERVICES_PANEL.TITLE' | translate }}</h2>
+              <p class="dash-panel__sub">{{ 'DASHBOARD.SERVICES_PANEL.SUBTITLE' | translate }}</p>
             </div>
             <button type="button" class="btn btn--primary btn--sm" (click)="openAddServiceModal()">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              <span>{{ translationService.currentLang() === 'en' ? 'Add New Service' : 'إضافة خدمة جديدة' }}</span>
+              <span>{{ 'DASHBOARD.SERVICES_PANEL.ADD_BTN' | translate }}</span>
             </button>
           </div>
 
-          <div class="dash-services-grid">
-            @for (service of supabaseService.services(); track service.id) {
-              <div class="dash-service-card">
-                <div class="dash-service-card__top">
-                  <span class="dash-service-card__discipline">
-                    @if (translationService.currentLang() === 'en') {
-                      {{ service.discipline_en || (service.disciplineKey ? (service.disciplineKey | translate) : (service.discipline_ar || service.discipline)) }}
-                    } @else {
-                      {{ service.discipline_ar || (service.disciplineKey ? (service.disciplineKey | translate) : (service.discipline_en || service.discipline)) }}
-                    }
-                  </span>
-                  <div class="dash-actions-cell">
-                    <button
-                      type="button"
-                      class="dash-btn-icon"
-                      (click)="openEditServiceModal(service)"
-                      [title]="translationService.currentLang() === 'en' ? 'Edit Service' : 'تعديل الخدمة'"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      class="dash-btn-icon dash-btn-icon--danger"
-                      (click)="openDeleteServiceConfirm(service)"
-                      [title]="translationService.currentLang() === 'en' ? 'Delete Service' : 'حذف الخدمة'"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      </svg>
-                    </button>
+          @if (supabaseService.isLoadingServices()) {
+            <div class="dash-services-grid">
+              @for (_ of skeletonCards; track $index) {
+                <div class="dash-service-card dash-service-card--skeleton" aria-hidden="true">
+                  <div class="dash-service-card__top">
+                    <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--w40"></span>
+                    <div class="dash-actions-cell">
+                      <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--btn"></span>
+                      <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--btn"></span>
+                    </div>
+                  </div>
+                  <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--h24 dash-skel-cell--w70" style="margin-top: 10px; margin-bottom: 8px;"></span>
+                  <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--w100" style="margin-bottom: 6px;"></span>
+                  <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--w80" style="margin-bottom: 16px;"></span>
+                  <div class="dash-service-card__footer">
+                    <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--badge"></span>
+                    <span class="skeleton-box skeleton-box--dark dash-skel-cell dash-skel-cell--badge" style="width: 50px;"></span>
                   </div>
                 </div>
+              }
+            </div>
+          } @else {
+            <div class="dash-services-grid">
+              @for (service of supabaseService.services(); track service.id) {
+                <div class="dash-service-card">
+                  <div class="dash-service-card__top">
+                    <span class="dash-service-card__discipline">
+                      @if (translationService.currentLang() === 'en') {
+                        {{ service.discipline_en || (service.disciplineKey ? (service.disciplineKey | translate) : (service.discipline_ar || service.discipline)) }}
+                      } @else {
+                        {{ service.discipline_ar || (service.disciplineKey ? (service.disciplineKey | translate) : (service.discipline_en || service.discipline)) }}
+                      }
+                    </span>
+                    <div class="dash-actions-cell">
+                      <button
+                        type="button"
+                        class="dash-btn-icon"
+                        (click)="openEditServiceModal(service)"
+                        [title]="'DASHBOARD.SERVICES_PANEL.EDIT' | translate"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        class="dash-btn-icon dash-btn-icon--danger"
+                        (click)="openDeleteServiceConfirm(service)"
+                        [title]="'DASHBOARD.SERVICES_PANEL.DELETE' | translate"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
 
-                <h3 class="dash-service-card__title">
-                  @if (translationService.currentLang() === 'en') {
-                    {{ service.title_en || (service.titleKey ? (service.titleKey | translate) : (service.title_ar || service.title)) }}
-                  } @else {
-                    {{ service.title_ar || (service.titleKey ? (service.titleKey | translate) : (service.title_en || service.title)) }}
-                  }
-                </h3>
-                <p class="dash-service-card__desc">
-                  @if (translationService.currentLang() === 'en') {
-                    {{ service.desc_en || (service.descKey ? (service.descKey | translate) : (service.desc_ar || service.description)) }}
-                  } @else {
-                    {{ service.desc_ar || (service.descKey ? (service.descKey | translate) : (service.desc_en || service.description)) }}
-                  }
-                </p>
-
-                <div class="dash-service-card__footer">
-                  <span class="dash-service-card__tag">
+                  <h3 class="dash-service-card__title">
                     @if (translationService.currentLang() === 'en') {
-                      {{ service.tag_en || (service.tagKey ? (service.tagKey | translate) : (service.tag_ar || service.footerTag)) }}
+                      {{ service.title_en || (service.titleKey ? (service.titleKey | translate) : (service.title_ar || service.title)) }}
                     } @else {
-                      {{ service.tag_ar || (service.tagKey ? (service.tagKey | translate) : (service.tag_en || service.footerTag)) }}
+                      {{ service.title_ar || (service.titleKey ? (service.titleKey | translate) : (service.title_en || service.title)) }}
                     }
-                  </span>
-                  <span class="dash-service-card__icon-tag">{{ service.icon }}</span>
+                  </h3>
+                  <p class="dash-service-card__desc">
+                    @if (translationService.currentLang() === 'en') {
+                      {{ service.desc_en || (service.descKey ? (service.descKey | translate) : (service.desc_ar || service.description)) }}
+                    } @else {
+                      {{ service.desc_ar || (service.descKey ? (service.descKey | translate) : (service.desc_en || service.description)) }}
+                    }
+                  </p>
+
+                  <div class="dash-service-card__footer">
+                    <span class="dash-service-card__tag">
+                      @if (translationService.currentLang() === 'en') {
+                        {{ service.tag_en || (service.tagKey ? (service.tagKey | translate) : (service.tag_ar || service.footerTag)) }}
+                      } @else {
+                        {{ service.tag_ar || (service.tagKey ? (service.tagKey | translate) : (service.tag_en || service.footerTag)) }}
+                      }
+                    </span>
+                    <span class="dash-service-card__icon-tag">{{ service.icon }}</span>
+                  </div>
                 </div>
-              </div>
-            }
-          </div>
+              }
+            </div>
+          }
         </section>
       }
 
@@ -356,234 +434,258 @@
         <section class="dash-panel">
           <div class="dash-panel__header">
             <div>
-              <h2 class="dash-panel__title">{{ translationService.currentLang() === 'en' ? 'Institutional Methodology' : 'منهجية العمل المؤسسية' }}</h2>
-              <p class="dash-panel__sub">{{ translationService.currentLang() === 'en' ? 'The four validated phases governing strategic and creative execution' : 'المراحل الأربع المعتمدة في تنفيذ المهام الإبداعية والاستراتيجية' }}</p>
+              <h2 class="dash-panel__title">{{ 'DASHBOARD.METHODOLOGY_PANEL.TITLE' | translate }}</h2>
+              <p class="dash-panel__sub">{{ 'DASHBOARD.METHODOLOGY_PANEL.SUBTITLE' | translate }}</p>
             </div>
           </div>
 
-          <div class="dash-approach-list">
-            @for (step of supabaseService.approachSteps(); track step.stepNumber) {
-              <div class="dash-approach-item">
-                <div class="dash-approach-item__num">{{ step.stepNumber }}</div>
-                <div class="dash-approach-item__content">
-                  <span class="dash-approach-item__phase">{{ step.phaseKey ? (step.phaseKey | translate) : step.phaseName }}</span>
-                  <h3 class="dash-approach-item__title">{{ step.titleKey ? (step.titleKey | translate) : step.title }}</h3>
-                  <p class="dash-approach-item__desc">{{ step.descKey ? (step.descKey | translate) : step.description }}</p>
+          @if (supabaseService.isLoadingApproach()) {
+            <div class="dash-approach-list">
+              @for (_ of [1, 2, 3, 4]; track $index) {
+                <div class="dash-approach-item dash-approach-item--skeleton" aria-hidden="true">
+                  <span class="skeleton-box skeleton-box--dark" style="width: 44px; height: 36px; border-radius: 8px;"></span>
+                  <div class="dash-approach-item__content" style="flex: 1;">
+                    <span class="skeleton-box skeleton-box--dark" style="width: 90px; height: 14px; margin-bottom: 8px;"></span>
+                    <span class="skeleton-box skeleton-box--dark" style="width: 220px; height: 20px; margin-bottom: 8px;"></span>
+                    <span class="skeleton-box skeleton-box--dark" style="width: 95%; height: 14px;"></span>
+                  </div>
                 </div>
-              </div>
-            }
-          </div>
+              }
+            </div>
+          } @else {
+            <div class="dash-approach-list">
+              @for (step of supabaseService.approachSteps(); track step.stepNumber) {
+                <div class="dash-approach-item">
+                  <div class="dash-approach-item__num">{{ step.stepNumber }}</div>
+                  <div class="dash-approach-item__content">
+                    <span class="dash-approach-item__phase">{{ step.phaseKey ? (step.phaseKey | translate) : step.phaseName }}</span>
+                    <h3 class="dash-approach-item__title">{{ step.titleKey ? (step.titleKey | translate) : step.title }}</h3>
+                    <p class="dash-approach-item__desc">{{ step.descKey ? (step.descKey | translate) : step.description }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
         </section>
       }
 
     </div>
   </main>
 
-  @if (selectedBriefing()) {
-    <div class="dash-modal-backdrop" (click)="closeBriefingDetails()"></div>
-    <div class="dash-modal" role="dialog" aria-modal="true">
-      <div class="dash-modal__header">
-        <div>
-          <span class="dash-modal__eyebrow">{{ translationService.currentLang() === 'en' ? 'Official Briefing Request' : 'تفاصيل طلب الإحاطة الرسمي' }}</span>
-          <h3 class="dash-modal__title">{{ selectedBriefing()?.entity_name }}</h3>
-        </div>
-        <button type="button" class="dash-modal__close" (click)="closeBriefingDetails()">✕</button>
+  <app-dialog
+    [isOpen]="!!selectedBriefing()"
+    [eyebrow]="'DASHBOARD.DIALOG.BRIEFING_EYEBROW' | translate"
+    [title]="selectedBriefing()?.entity_name || ''"
+    (closed)="closeBriefingDetails()"
+  >
+    <div class="dash-detail-grid">
+      <div>
+        <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.REPRESENTATIVE' | translate }}</label>
+        <p class="dash-detail-val">{{ selectedBriefing()?.representative_name }}</p>
       </div>
-
-      <div class="dash-modal__body">
-        <div class="dash-detail-grid">
-          <div>
-            <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Official Representative' : 'المسؤول / الممثل الرسمي' }}</label>
-            <p class="dash-detail-val">{{ selectedBriefing()?.representative_name }}</p>
-          </div>
-          <div>
-            <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Institutional Email' : 'البريد الإلكتروني المؤسسي' }}</label>
-            <p class="dash-detail-val">{{ selectedBriefing()?.official_email }}</p>
-          </div>
-          <div>
-            <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Mandate Scope' : 'نطاق المهمة المطلوبة' }}</label>
-            <p class="dash-detail-val">{{ selectedBriefing()?.mandate_scope }}</p>
-          </div>
-          <div>
-            <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Submission Date' : 'تاريخ الاستلام' }}</label>
-            <p class="dash-detail-val">{{ selectedBriefing()?.created_at | date:'medium' }}</p>
-          </div>
-        </div>
-
-        <div class="dash-detail-message">
-          <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Briefing Objectives & Scope' : 'أهداف ومحاور الإحاطة المطلوبة' }}</label>
-          <div class="dash-detail-message-box">
-            {{ selectedBriefing()?.message }}
-          </div>
-        </div>
+      <div>
+        <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.EMAIL' | translate }}</label>
+        <p class="dash-detail-val">{{ selectedBriefing()?.official_email }}</p>
       </div>
-
-      <div class="dash-modal__footer">
-        <a [href]="'mailto:' + selectedBriefing()?.official_email" class="btn btn--primary btn--sm">
-          <span>{{ translationService.currentLang() === 'en' ? 'Reply via Official Email' : 'الرد عبر البريد الرسمي' }}</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </a>
-        <button
-          type="button"
-          class="btn btn--danger-ghost btn--sm"
-          (click)="openDeleteBriefingConfirm(selectedBriefing()!)"
-          [title]="translationService.currentLang() === 'en' ? 'Delete Briefing' : 'حذف الطلب'"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="3 6 5 6 21 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-          </svg>
-          <span>{{ translationService.currentLang() === 'en' ? 'Delete' : 'حذف' }}</span>
-        </button>
-        <button type="button" class="btn btn--secondary btn--sm" (click)="closeBriefingDetails()">{{ translationService.currentLang() === 'en' ? 'Close' : 'إغلاق' }}</button>
+      <div>
+        <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.MANDATE' | translate }}</label>
+        <p class="dash-detail-val">{{ selectedBriefing()?.mandate_scope }}</p>
+      </div>
+      <div>
+        <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.DATE' | translate }}</label>
+        <p class="dash-detail-val">{{ selectedBriefing()?.created_at | date:'medium' }}</p>
       </div>
     </div>
-  }
 
-  @if (isServiceModalOpen()) {
-    <div class="dash-modal-backdrop" (click)="closeServiceModal()"></div>
-    <div class="dash-modal" role="dialog" aria-modal="true">
-      <div class="dash-modal__header">
-        <div>
-          <span class="dash-modal__eyebrow">{{ editingServiceId() ? (translationService.currentLang() === 'en' ? 'Edit Service' : 'تعديل الخدمة') : (translationService.currentLang() === 'en' ? 'Add New Service' : 'إضافة خدمة جديدة') }}</span>
-          <h3 class="dash-modal__title">{{ editingServiceId() ? (translationService.currentLang() === 'en' ? 'Update Service Details' : 'تحديث تفاصيل الخدمة') : (translationService.currentLang() === 'en' ? 'Register Strategic Service' : 'تسجيل خدمة استراتيجية') }}</h3>
-        </div>
-        <button type="button" class="dash-modal__close" (click)="closeServiceModal()">✕</button>
+    <div class="dash-detail-message">
+      <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.OBJECTIVES' | translate }}</label>
+      <div class="dash-detail-message-box">
+        {{ selectedBriefing()?.message }}
       </div>
-
-      <form [formGroup]="serviceForm" (ngSubmit)="saveService()">
-        <div class="dash-modal__body">
-          <div class="dash-form-row">
-            <div class="dash-form-group">
-              <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Service Title (Arabic)' : 'عنوان الخدمة بالعربية' }}</label>
-              <input type="text" formControlName="title_ar" class="dash-input" placeholder="مثال: استراتيجية الهوية" dir="rtl" />
-            </div>
-            <div class="dash-form-group">
-              <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Service Title (English)' : 'عنوان الخدمة بالإنجليزية' }}</label>
-              <input type="text" formControlName="title_en" class="dash-input" placeholder="e.g. Brand Strategy" dir="ltr" />
-            </div>
-          </div>
-
-          <div class="dash-form-row">
-            <div class="dash-form-group">
-              <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Discipline (Arabic)' : 'المسار / التخصص بالعربية' }}</label>
-              <input type="text" formControlName="discipline_ar" class="dash-input" placeholder="مثال: 01 / التخصص" dir="rtl" />
-            </div>
-            <div class="dash-form-group">
-              <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Discipline (English)' : 'المسار / التخصص بالإنجليزية' }}</label>
-              <input type="text" formControlName="discipline_en" class="dash-input" placeholder="e.g. 01 / DISCIPLINE" dir="ltr" />
-            </div>
-          </div>
-
-          <div class="dash-form-group">
-            <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Strategic Description' : 'الوصف الاستراتيجي' }}</label>
-            <textarea formControlName="description" class="dash-textarea" rows="3" [placeholder]="translationService.currentLang() === 'en' ? 'Service deliverables and strategic impact...' : 'وصف الخدمة ومخرجاتها...'"></textarea>
-          </div>
-
-          <div class="dash-form-group">
-            <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Footer Tag' : 'الوسم السفلي' }}</label>
-            <input type="text" formControlName="footerTag" class="dash-input" placeholder="Enterprise & Sovereign" />
-          </div>
-
-          <div class="dash-form-group">
-            <label class="dash-detail-label">{{ translationService.currentLang() === 'en' ? 'Icon' : 'الأيقونة' }}</label>
-            <select formControlName="icon" class="dash-input">
-              <option value="compass">{{ translationService.currentLang() === 'en' ? 'Compass' : 'بوصلة / Compass' }}</option>
-              <option value="chart">{{ translationService.currentLang() === 'en' ? 'Chart' : 'مخطط / Chart' }}</option>
-              <option value="sparkle">{{ translationService.currentLang() === 'en' ? 'Sparkle' : 'إبداع / Sparkle' }}</option>
-              <option value="chat">{{ translationService.currentLang() === 'en' ? 'Chat' : 'حوار / Chat' }}</option>
-              <option value="film">{{ translationService.currentLang() === 'en' ? 'Film' : 'سينمائي / Film' }}</option>
-              <option value="stage">{{ translationService.currentLang() === 'en' ? 'Stage' : 'منصة وفعاليات / Stage' }}</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="dash-modal__footer">
-          <button type="submit" class="btn btn--primary btn--sm">
-            <span>{{ translationService.currentLang() === 'en' ? 'Save Changes' : 'حفظ التغييرات' }}</span>
-          </button>
-          <button type="button" class="btn btn--secondary btn--sm" (click)="closeServiceModal()">{{ translationService.currentLang() === 'en' ? 'Cancel' : 'إلغاء' }}</button>
-        </div>
-      </form>
     </div>
-  }
 
-  @if (deleteConfirm()) {
-    <div class="dash-modal-backdrop" (click)="cancelDelete()"></div>
-    <div class="dash-modal dash-modal--confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-dialog-title">
-      <div class="dash-confirm">
-        <div class="dash-confirm__icon-box">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-            <line x1="12" y1="9" x2="12" y2="13"></line>
-            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-          </svg>
-        </div>
+    <div dialog-footer class="dash-dialog-actions">
+      <a [href]="'mailto:' + selectedBriefing()?.official_email" class="btn btn--primary btn--sm">
+        <span>{{ 'DASHBOARD.DIALOG.REPLY_EMAIL' | translate }}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+      <button
+        type="button"
+        class="btn btn--danger-ghost btn--sm"
+        (click)="openDeleteBriefingConfirm(selectedBriefing()!)"
+        [title]="'DASHBOARD.DIALOG.DELETE' | translate"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+        <span>{{ 'DASHBOARD.DIALOG.DELETE' | translate }}</span>
+      </button>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="closeBriefingDetails()">{{ 'DASHBOARD.DIALOG.CLOSE' | translate }}</button>
+    </div>
+  </app-dialog>
 
-        <div class="dash-confirm__content">
-          <h3 id="confirm-dialog-title" class="dash-confirm__title">
-            {{ translationService.currentLang() === 'en' ? 'Confirm Deletion' : 'تأكيد الحذف' }}
-          </h3>
-
-          <p class="dash-confirm__desc">
-            @if (deleteConfirm()?.type === 'service') {
-              {{ translationService.currentLang() === 'en'
-                ? 'Are you sure you want to permanently delete this strategic service from the showcase?'
-                : 'هل أنت متأكد من رغبتك في حذف هذه الخدمة الاستراتيجية نهائياً من الموقع؟' }}
-            } @else {
-              {{ translationService.currentLang() === 'en'
-                ? 'Are you sure you want to delete this institutional briefing record?'
-                : 'هل أنت متأكد من رغبتك في حذف طلب الإحاطة الرسمي الخاص بهذه الجهة؟' }}
-            }
-          </p>
-
-          <div class="dash-confirm__target">
-            <span class="dash-confirm__target-badge">
-              {{ deleteConfirm()?.type === 'service'
-                ? (translationService.currentLang() === 'en' ? 'Service' : 'الخدمة')
-                : (translationService.currentLang() === 'en' ? 'Entity' : 'الجهة') }}
+  <app-dialog
+    [isOpen]="isServiceModalOpen()"
+    [eyebrow]="editingServiceId() ? ('DASHBOARD.DIALOG.SERVICE_EDIT_EYEBROW' | translate) : ('DASHBOARD.DIALOG.SERVICE_ADD_EYEBROW' | translate)"
+    [title]="editingServiceId() ? ('DASHBOARD.DIALOG.SERVICE_EDIT_TITLE' | translate) : ('DASHBOARD.DIALOG.SERVICE_ADD_TITLE' | translate)"
+    (closed)="closeServiceModal()"
+  >
+    <form id="serviceForm" [formGroup]="serviceForm" (ngSubmit)="saveService()" novalidate>
+      <div class="dash-form-row">
+        <div class="dash-form-group">
+          <label class="dash-detail-label">
+            {{ 'DASHBOARD.DIALOG.TITLE_AR_LABEL' | translate }}
+            <span class="dash-required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="title_ar"
+            class="dash-input"
+            [class.dash-input--error]="isFieldInvalid('title_ar')"
+            [placeholder]="'DASHBOARD.DIALOG.TITLE_AR_PLACEHOLDER' | translate"
+            dir="rtl"
+          />
+          @if (isFieldInvalid('title_ar')) {
+            <span class="dash-error-msg">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>{{ 'DASHBOARD.DIALOG.TITLE_AR_REQUIRED' | translate }}</span>
             </span>
-            <strong class="dash-confirm__target-name">{{ deleteConfirm()?.title }}</strong>
-          </div>
+          }
+        </div>
+        <div class="dash-form-group">
+          <label class="dash-detail-label">
+            {{ 'DASHBOARD.DIALOG.TITLE_EN_LABEL' | translate }}
+            <span class="dash-required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="title_en"
+            class="dash-input"
+            [class.dash-input--error]="isFieldInvalid('title_en')"
+            [placeholder]="'DASHBOARD.DIALOG.TITLE_EN_PLACEHOLDER' | translate"
+            dir="ltr"
+          />
+          @if (isFieldInvalid('title_en')) {
+            <span class="dash-error-msg">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>{{ 'DASHBOARD.DIALOG.TITLE_EN_REQUIRED' | translate }}</span>
+            </span>
+          }
+        </div>
+      </div>
 
-          <div class="dash-confirm__warning">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <div class="dash-form-row">
+        <div class="dash-form-group">
+          <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.DISCIPLINE_AR_LABEL' | translate }}</label>
+          <input
+            type="text"
+            formControlName="discipline_ar"
+            class="dash-input"
+            [class.dash-input--error]="isFieldInvalid('discipline_ar')"
+            [placeholder]="'DASHBOARD.DIALOG.DISCIPLINE_AR_PLACEHOLDER' | translate"
+            dir="rtl"
+          />
+        </div>
+        <div class="dash-form-group">
+          <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.DISCIPLINE_EN_LABEL' | translate }}</label>
+          <input
+            type="text"
+            formControlName="discipline_en"
+            class="dash-input"
+            [class.dash-input--error]="isFieldInvalid('discipline_en')"
+            [placeholder]="'DASHBOARD.DIALOG.DISCIPLINE_EN_PLACEHOLDER' | translate"
+            dir="ltr"
+          />
+        </div>
+      </div>
+
+      <div class="dash-form-group">
+        <label class="dash-detail-label">
+          {{ 'DASHBOARD.DIALOG.DESC_LABEL' | translate }}
+          <span class="dash-required" aria-hidden="true">*</span>
+        </label>
+        <textarea
+          formControlName="description"
+          class="dash-textarea"
+          [class.dash-input--error]="isFieldInvalid('description')"
+          rows="3"
+          [placeholder]="'DASHBOARD.DIALOG.DESC_PLACEHOLDER' | translate"
+        ></textarea>
+        @if (isFieldInvalid('description')) {
+          <span class="dash-error-msg">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
-            <span>
-              {{ translationService.currentLang() === 'en'
-                ? 'This action cannot be undone and data will be permanently removed.'
-                : 'لا يمكن التراجع عن هذا الإجراء وسيتم مسح السجل نهائياً.' }}
-            </span>
-          </div>
-        </div>
-
-        <div class="dash-confirm__actions">
-          <button
-            type="button"
-            class="btn btn--danger-glow"
-            (click)="executeDelete()"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-            <span>{{ translationService.currentLang() === 'en' ? 'Yes, Delete' : 'نعم، تأكيد الحذف' }}</span>
-          </button>
-
-          <button
-            type="button"
-            class="btn btn--secondary"
-            (click)="cancelDelete()"
-          >
-            <span>{{ translationService.currentLang() === 'en' ? 'Cancel' : 'إلغاء' }}</span>
-          </button>
-        </div>
+            <span>{{ 'DASHBOARD.DIALOG.DESC_REQUIRED' | translate }}</span>
+          </span>
+        }
       </div>
+
+      <div class="dash-form-group">
+        <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.TAG_LABEL' | translate }}</label>
+        <input
+          type="text"
+          formControlName="footerTag"
+          class="dash-input"
+          [class.dash-input--error]="isFieldInvalid('footerTag')"
+          [placeholder]="'DASHBOARD.DIALOG.TAG_PLACEHOLDER' | translate"
+        />
+      </div>
+
+      <div class="dash-form-group">
+        <label class="dash-detail-label">{{ 'DASHBOARD.DIALOG.ICON_LABEL' | translate }}</label>
+        <select
+          formControlName="icon"
+          class="dash-input"
+          [class.dash-input--error]="isFieldInvalid('icon')"
+        >
+          <option value="compass">{{ 'DASHBOARD.DIALOG.ICON_COMPASS' | translate }}</option>
+          <option value="chart">{{ 'DASHBOARD.DIALOG.ICON_CHART' | translate }}</option>
+          <option value="sparkle">{{ 'DASHBOARD.DIALOG.ICON_SPARKLE' | translate }}</option>
+          <option value="chat">{{ 'DASHBOARD.DIALOG.ICON_CHAT' | translate }}</option>
+          <option value="film">{{ 'DASHBOARD.DIALOG.ICON_FILM' | translate }}</option>
+          <option value="stage">{{ 'DASHBOARD.DIALOG.ICON_STAGE' | translate }}</option>
+        </select>
+      </div>
+    </form>
+
+    <div dialog-footer class="dash-dialog-actions">
+      <button form="serviceForm" type="submit" class="btn btn--primary btn--sm" [disabled]="isSavingService()">
+        @if (isSavingService()) {
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span>{{ 'DASHBOARD.DIALOG.SAVING' | translate }}</span>
+        } @else {
+          <span>{{ 'DASHBOARD.DIALOG.SAVE' | translate }}</span>
+        }
+      </button>
+      <button type="button" class="btn btn--secondary btn--sm" (click)="closeServiceModal()">{{ 'DASHBOARD.DIALOG.CANCEL' | translate }}</button>
     </div>
-  }
+  </app-dialog>
+
+  <app-confirm-dialog
+    [isOpen]="!!deleteConfirm()"
+    [isLoading]="isDeleting()"
+    [title]="'DASHBOARD.DIALOG.DELETE_TITLE' | translate"
+    [description]="deleteConfirm()?.type === 'service' ? ('DASHBOARD.DIALOG.DELETE_SERVICE_DESC' | translate) : ('DASHBOARD.DIALOG.DELETE_BRIEFING_DESC' | translate)"
+    [targetBadge]="deleteConfirm()?.type === 'service' ? ('DASHBOARD.DIALOG.BADGE_SERVICE' | translate) : ('DASHBOARD.DIALOG.BADGE_ENTITY' | translate)"
+    [targetName]="deleteConfirm()?.title || ''"
+    [warningText]="'DASHBOARD.DIALOG.WARNING_PERMANENT' | translate"
+    [confirmText]="'DASHBOARD.DIALOG.CONFIRM_DELETE' | translate"
+    [cancelText]="'DASHBOARD.DIALOG.CANCEL' | translate"
+    (confirmed)="executeDelete()"
+    (cancelled)="cancelDelete()"
+  ></app-confirm-dialog>
 </div>

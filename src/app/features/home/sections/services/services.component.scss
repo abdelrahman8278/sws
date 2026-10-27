@@ -39,3 +39,48 @@
     }
   }
 }
+
+.service-card-skeleton {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 280px;
+
+  &__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    margin-bottom: var(--space-2);
+  }
+
+  &__num {
+    width: 90px;
+    height: 14px;
+  }
+
+  &__title {
+    width: 75%;
+    height: 24px;
+    margin-top: var(--space-1);
+  }
+
+  &__desc {
+    width: 100%;
+    height: 14px;
+
+    &--short {
+      width: 60%;
+    }
+  }
+
+  &__footer {
+    width: 110px;
+    height: 18px;
+    margin-top: auto;
+    border-radius: 999px;
+  }
+}

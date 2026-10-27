@@ -11,11 +11,12 @@ import { NAVIGATION_ITEMS } from '../../../data/navigation.data';
 import { NavItem } from '../../../core/models/navigation.model';
 import { TranslationService } from '../../../core/services/translation.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { ThemePickerComponent } from '../theme-picker/theme-picker.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslatePipe],
+  imports: [CommonModule, RouterModule, TranslatePipe, ThemePickerComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

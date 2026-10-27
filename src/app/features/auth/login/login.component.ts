@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { TranslationService } from '../../../core/services/translation.service';
+import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, TranslatePipe],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,6 +18,7 @@ export class LoginComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   readonly supabaseService = inject(SupabaseService);
+  readonly translationService = inject(TranslationService);
 
   ngOnInit(): void {
     if (this.supabaseService.isAuthenticated()) {
@@ -48,7 +51,7 @@ export class LoginComponent implements OnInit {
     if (res.success) {
       this.router.navigate(['/dashboard']);
     } else {
-      this.errorMessage.set(res.error || 'فشل تسجيل الدخول. يرجى التحقق من البيانات.');
+      this.errorMessage.set(res.error || this.translationService.translate('AUTH.LOGIN_FAILED'));
     }
   }
 }

@@ -9,8 +9,21 @@
     </div>
 
     <div class="services__grid">
-      @for (service of services(); track service.id) {
-        <app-service-card [service]="service" />
+      @if (isLoading()) {
+        @for (_ of skeletonItems; track $index) {
+          <div class="service-card-skeleton" aria-hidden="true">
+            <div class="skeleton-box service-card-skeleton__icon"></div>
+            <div class="skeleton-box service-card-skeleton__num"></div>
+            <div class="skeleton-box service-card-skeleton__title"></div>
+            <div class="skeleton-box service-card-skeleton__desc"></div>
+            <div class="skeleton-box service-card-skeleton__desc service-card-skeleton__desc--short"></div>
+            <div class="skeleton-box service-card-skeleton__footer"></div>
+          </div>
+        }
+      } @else {
+        @for (service of services(); track service.id) {
+          <app-service-card [service]="service" />
+        }
       }
     </div>
   </div>
